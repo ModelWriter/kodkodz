@@ -21,12 +21,12 @@
  */
 package kodkod.engine.satlab;
 
+import org.sat4j.minisat.SolverFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.sat4j.minisat.SolverFactory;
 
 /**
  * A factory for generating SATSolver instances of a given type.
@@ -69,9 +69,9 @@ public abstract class SATFactory {
 	 * The factory that produces instances of the default sat4j solver.
 	 * @see org.sat4j.core.ASolverFactory#defaultSolver()
 	 */
-	public static final SATFactory DefaultSAT4J = new SATFactory() { 
-		public SATSolver instance() { 
-			return new SAT4J(SolverFactory.instance().defaultSolver()); 
+	public static final SATFactory DefaultSAT4J = new SATFactory() {
+		public SATSolver instance() {
+			return new SAT4J(SolverFactory.instance().defaultSolver());
 		}
 		public String toString() { return "DefaultSAT4J"; }
 	};
@@ -82,8 +82,8 @@ public abstract class SATFactory {
 	 * @see org.sat4j.core.ASolverFactory#lightSolver()
 	 */
 	public static final SATFactory LightSAT4J = new SATFactory() {
-		public SATSolver instance() { 
-			return new SAT4J(SolverFactory.instance().lightSolver()); 
+		public SATSolver instance() {
+			return new SAT4J(SolverFactory.instance().lightSolver());
 		}
 		public String toString() { return "LightSAT4J"; }
 	};
@@ -98,17 +98,25 @@ public abstract class SATFactory {
 		}
 		public String toString() { return "MiniSat"; }
 	};
+
+	public static final SATFactory Z3Solver = new SATFactory() {
+		public SATSolver instance() {
+			return new Z3Solver();
+		}
+        public boolean prover() { return true; }
+		public String toString() { return "Z3"; }
+	};
 	
 	/**
-	 * The factory the produces {@link SATProver proof logging} 
+	 * The factory the produces {@link SATProver proof logging}
 	 * instances of the MiniSat solver.  Note that core
 	 * extraction can incur a significant time overhead during solving,
 	 * so if you do not need this functionality, use the {@link #MiniSat} factory
 	 * instead.
 	 */
 	public static final SATFactory MiniSatProver = new SATFactory() {
-		public SATSolver instance() { 
-			return new MiniSatProver(); 
+		public SATSolver instance() {
+			return new MiniSatProver();
 		}
 		@Override
 		public boolean prover() { return true; }
@@ -249,7 +257,7 @@ public abstract class SATFactory {
 					return new ExternalSolver(executable, cnf, false, options);
 				} else {
 					try {
-						return new ExternalSolver(executable, 
+						return new ExternalSolver(executable,
 								File.createTempFile("kodkod", String.valueOf(executable.hashCode())).getAbsolutePath(), 
 								true, options);
 					} catch (IOException e) {
