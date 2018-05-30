@@ -11,6 +11,8 @@ import kodkod.instance.Tuple;
 import kodkod.instance.TupleSet;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Z3Solver implements SATSolver {
@@ -35,7 +37,10 @@ public class Z3Solver implements SATSolver {
 
     private long solvingTime = 0;
 
+    //default goal
     private Goal goal = null;
+    //qe goal
+    private Goal qeGoal = null;
 
     private Set<Expr> possibleExprs;
     private Map<Expr, Map.Entry<Relation, Tuple>> exprTupleMap;
@@ -52,6 +57,7 @@ public class Z3Solver implements SATSolver {
 
         ctx = new Context(cfg);
         goal = ctx.mkGoal(true, false, false);
+        qeGoal = ctx.mkGoal(true, false, false);
     }
 
     public Status getStatus() {
@@ -81,7 +87,7 @@ public class Z3Solver implements SATSolver {
             objectMap.put(object.toString(), object);
         }
 
-        UNIV = ctx.mkEnumSort("Univ", objectMap.keySet().toArray(new String[objectMap.keySet().size()]));
+        UNIV = ctx.mkEnumSort("univ", objectMap.keySet().toArray(new String[objectMap.keySet().size()]));
 
         for (Expr expr : UNIV.getConsts()) {
             Object object = objectMap.get(expr.toString());
@@ -90,23 +96,23 @@ public class Z3Solver implements SATSolver {
             objectExprMap.put(object, expr);
         }
 
-        AbstractDetector detector = new AbstractDetector(Collections.emptySet()) {};
+        //AbstractDetector detector = new AbstractDetector(Collections.emptySet()) {};
 
         FuncDecl univFuncDecl = null;
-        if (detector.visit((ConstantExpression) Relation.UNIV)) {
+        //if (detector.visit((ConstantExpression) Relation.UNIV)) {
             univFuncDecl = ctx.mkFuncDecl("univ", new Sort[]{UNIV}, ctx.mkBoolSort());
             funcDeclMap.put(Relation.UNIV, univFuncDecl);
-        }
+        //}
         /*FuncDecl idenFuncDecl = null;
-        if (detector.visit((ConstantExpression) Relation.IDEN) || formula.toString().contains("*") || formula.toString().contains("^")) {
+        //if (detector.visit((ConstantExpression) Relation.IDEN)) {
             idenFuncDecl = ctx.mkFuncDecl("iden", new Sort[]{UNIV, UNIV}, ctx.mkBoolSort());
             funcDeclMap.put(Relation.IDEN, idenFuncDecl);
-        }*/
+        //}*/
         FuncDecl noneFuncDecl = null;
-        if (detector.visit((ConstantExpression) Relation.NONE)) {
-            noneFuncDecl = ctx.mkFuncDecl("None", new Sort[]{UNIV}, ctx.mkBoolSort());
+        //if (detector.visit((ConstantExpression) Relation.NONE)) {
+            noneFuncDecl = ctx.mkFuncDecl("none", new Sort[]{UNIV}, ctx.mkBoolSort());
             funcDeclMap.put(Relation.NONE, noneFuncDecl);
-        }
+        //}
         /*FuncDecl intsFuncDecl = null;
         if (detector.visit((ConstantExpression) Relation.INTS)) {
             intsFuncDecl = funcDeclMap.put(Relation.INTS, ctx.mkFuncDecl("Ints", new Sort[] {ctx.mkIntSort()}, ctx.mkBoolSort()));
@@ -162,16 +168,80 @@ public class Z3Solver implements SATSolver {
         }
 
         Map<BoolExpr, Formula> boolExprMap = separateFormula(formula).stream()
-                .collect(Collectors.toMap(f -> visit(f, 0, new Expr[] {}), f -> f));
+                .collect(Collectors.toMap(f -> visit(f, 0, new Expr[] {})
+                        , f -> f
+                        , (a, b) -> a));
 
-        boolExprMap.forEach((boolExpr, f) -> {
+        /*boolExprMap.forEach((boolExpr, f) -> {
             System.out.println("kodkod: " + f);
             System.out.println("z3:");
             System.out.println(boolExpr);
             System.out.println();
-        });
+        });*/
+
+        /*boolExprMap.keySet().forEach(boolExpr -> {
+            if (quantifierSizeMap.getOrDefault(boolExpr, 0) < 3) {
+                // TODO: Normal operation
+                goal.add(boolExpr);
+            }
+            else {
+                // TODO: Apply quantifier elimination tactic
+                qeGoal.add(boolExpr);
+            }
+        });*/
 
         boolExprMap.keySet().forEach(goal::add);
+
+        //Tactics
+        Tactic t_qe = ctx.mkTactic("qe");//ctx.andThen(ctx.mkTactic("snf"), ctx.mkTactic("qe") );
+        Tactic t_default = ctx.mkTactic("snf");
+        solver = ctx.mkSolver();
+        Params p = ctx.mkParams();
+        p.add("mbqi", true);
+        p.add("pull-nested-quantifiers", true);
+        solver.setParameters(p);
+
+        ApplyResult qe_ar = t_default.apply(goal);
+
+        BoolExpr[] originals = goal.getFormulas();
+        BoolExpr[] newOnes = qe_ar.getSubgoals()[0].getFormulas();
+
+        // Pattern to find all quantifiers
+        Pattern pattern = Pattern.compile("([(][a-zA-Z0-9!]+( univ)[)])");
+
+        for (int i = 0; i < originals.length; i++) {
+            Formula f = boolExprMap.get(originals[i]);
+            BoolExpr e = newOnes[i];
+            int forallCount = 0;//e.getSExpr().split("forall").length - 1;
+            Matcher matcher = pattern.matcher(e.getSExpr());
+            while (matcher.find())
+                forallCount++;
+            if (f != null) {
+                System.out.println("kodkod: " + f);
+                System.out.println("z3:");
+                System.out.println(originals[i]);
+                /*System.out.println("snf z3:");
+                System.out.println(newOnes[i]);*/
+                System.out.println();
+                System.out.println("Quantifiers: " + forallCount);
+                System.out.println();
+            }
+            if (forallCount < 1)
+                solver.add(e);
+            else
+                qeGoal.add(e);
+        }
+
+        System.out.println("----------------After Tactics----------------------");
+
+        ApplyResult ar = t_qe.apply(qeGoal);
+
+        for (BoolExpr e : ar.getSubgoals()[0].getFormulas())
+            solver.add(e);
+
+        //end of tactics application
+        System.out.println(solver);
+        System.out.println("---------------------------------------------------");
 
         System.out.println();
         System.out.println();
@@ -207,22 +277,6 @@ public class Z3Solver implements SATSolver {
 
     public boolean solve(Formula formula, Bounds bounds) {
         makeAssertions(formula, bounds);
-
-        System.out.println("----------------After Tactics----------------------");
-        //Tactics
-        Tactic t = ctx.andThen(ctx.mkTactic("snf"), ctx.mkTactic("qe") );
-        //Tactic t = ctx.mkTactic("snf");
-        solver = ctx.mkSolver();
-        Params p = ctx.mkParams();
-        p.add("mbqi", true);
-        p.add("pull-nested-quantifiers", true);
-        solver.setParameters(p);
-        ApplyResult ar = t.apply(goal);
-        for (BoolExpr e : ar.getSubgoals()[0].getFormulas())
-            solver.add(e);
-        //end of tactics application
-        System.out.println(solver);
-        System.out.println("---------------------------------------------------");
 
         solveThis(bounds);
 
@@ -391,7 +445,7 @@ public class Z3Solver implements SATSolver {
             BinaryExpression binaryExpression = (BinaryExpression) node;
             switch (binaryExpression.op()) {
                 case JOIN:
-                    Expr expr = ctx.mkConst("x" + depth, UNIV);
+                    Expr expr = ctx.mkConst("x!" + depth, UNIV);
 
                     Expression leftExpression = binaryExpression.left();
                     Expression rightExpression = binaryExpression.right();
@@ -505,12 +559,20 @@ public class Z3Solver implements SATSolver {
 
                     exprs1 = new Expr[comparisonFormula.left().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("x" + (depth + i), UNIV);
+                        exprs1[i] = ctx.mkConst("x!" + (depth + i), UNIV);
                     }
+
+                    BoolExpr left = visit(comparisonFormula.left(), exprs1.length + depth, exprs1);
+                    BoolExpr right = visit(comparisonFormula.right(), exprs1.length + depth, exprs1);
+
                     return ctx.mkForall(exprs1
-                            , ctx.mkIff(visit(comparisonFormula.left(), exprs1.length + depth, exprs1)
-                                    , visit(comparisonFormula.right(), exprs1.length + depth, exprs1))
+                            , ctx.mkAnd(ctx.mkImplies(left, right), ctx.mkImplies(right, left))
                             , 0, null, null, ctx.mkSymbol(quantifierPrefix + quantifierID++), null);
+
+                    /*return ctx.mkForall(exprs1
+                            , ctx.mkEq(visit(comparisonFormula.left(), exprs1.length + depth, exprs1)
+                                    , visit(comparisonFormula.right(), exprs1.length + depth, exprs1))
+                            , 0, null, null, ctx.mkSymbol(quantifierPrefix + quantifierID++), null);*/
                 case SUBSET:
                     if (comparisonFormula.left() instanceof Variable) {
                         if (comparisonFormula.right() instanceof Variable) {
@@ -530,7 +592,7 @@ public class Z3Solver implements SATSolver {
 
                     exprs1 = new Expr[comparisonFormula.left().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("x" + (i + depth), UNIV);
+                        exprs1[i] = ctx.mkConst("x!" + (i + depth), UNIV);
                     }
                     return ctx.mkForall(exprs1
                             , ctx.mkImplies(visit(comparisonFormula.left(), exprs1.length + depth, exprs1)
@@ -544,7 +606,10 @@ public class Z3Solver implements SATSolver {
                 case IMPLIES:
                     return ctx.mkImplies(visit(binaryFormula.left(), depth, exprs), visit(binaryFormula.right(), depth, exprs));
                 case IFF:
-                    return ctx.mkIff(visit(binaryFormula.left(), depth, exprs), visit(binaryFormula.right(), depth, exprs));
+                    BoolExpr left = visit(binaryFormula.left(), depth, exprs);
+                    BoolExpr right = visit(binaryFormula.right(), depth, exprs);
+                    return ctx.mkAnd(ctx.mkImplies(left, right), ctx.mkImplies(right, left));
+                    //return ctx.mkEq(visit(binaryFormula.left(), depth, exprs), visit(binaryFormula.right(), depth, exprs));
                 case OR:
                     return ctx.mkOr(visit(binaryFormula.left(), depth, exprs), visit(binaryFormula.right(), depth, exprs));
                 case AND:
@@ -574,7 +639,7 @@ public class Z3Solver implements SATSolver {
                 case SOME:
                     Expr[] exprs1 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("x" + (i + depth), UNIV);
+                        exprs1[i] = ctx.mkConst("x!" + (i + depth), UNIV);
                     }
                     return ctx.mkExists(exprs1
                             , visit(multiplicityFormula.expression(), exprs1.length + depth, exprs1)
@@ -582,7 +647,7 @@ public class Z3Solver implements SATSolver {
                 case NO:
                     exprs1 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("x" + (i + depth), UNIV);
+                        exprs1[i] = ctx.mkConst("x!" + (i + depth), UNIV);
                     }
                     return ctx.mkNot(ctx.mkExists(exprs1
                             , visit(multiplicityFormula.expression(), exprs1.length + depth, exprs1)
@@ -590,11 +655,11 @@ public class Z3Solver implements SATSolver {
                 case ONE:
                     exprs1 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("a" + (i + depth), UNIV);
+                        exprs1[i] = ctx.mkConst("y!" + (i + depth), UNIV);
                     }
                     Expr[] exprs2 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs2.length; i++) {
-                        exprs2[i] = ctx.mkConst("b" + (i + depth), UNIV);
+                        exprs2[i] = ctx.mkConst("z!" + (i + depth), UNIV);
                     }
                     BoolExpr[] eqs = new BoolExpr[exprs1.length];
                     for (int i = 0; i < eqs.length; i++) {
@@ -618,11 +683,11 @@ public class Z3Solver implements SATSolver {
                 case LONE:
                     exprs1 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs1[i] = ctx.mkConst("a" + (i + depth), UNIV);
+                        exprs1[i] = ctx.mkConst("y!" + (i + depth), UNIV);
                     }
                     exprs2 = new Expr[multiplicityFormula.expression().arity()];
                     for (int i = 0; i < exprs1.length; i++) {
-                        exprs2[i] = ctx.mkConst("b" + (i + depth), UNIV);
+                        exprs2[i] = ctx.mkConst("z!" + (i + depth), UNIV);
                     }
                     eqs = new BoolExpr[exprs1.length];
                     for (int i = 0; i < eqs.length; i++) {
@@ -677,6 +742,11 @@ public class Z3Solver implements SATSolver {
                 return ctx.mkFalse();
             }
         }
+        else if (node instanceof RelationPredicate) {
+            RelationPredicate relationPredicate = (RelationPredicate) node;
+            return visit(relationPredicate.toConstraints(), depth, exprs);
+        }
+
         return ctx.mkTrue();
     }
 

@@ -177,16 +177,16 @@ public final class FileSystem {
 	 * Usage: java examples.alloy.FileSystem [scope]
 	 */
 	public  static void main(String[] args) {
-		if (args.length < 1)
-			usage();
+//		if (args.length < 1)
+//			usage();
 		try {
-			final int n = Integer.parseInt(args[0]);
+//			final int n = Integer.parseInt(args[0]);
 			final FileSystem model = new FileSystem();
 			final Formula f = model.checkNoDirAliases();
 			System.out.println(f);
-			final Bounds b = model.bounds(n);
+			final Bounds b = model.bounds(3);
 			final Solver solver = new Solver();
-			solver.options().setSolver(SATFactory.MiniSat);
+			solver.options().setSolver(SATFactory.Z3Solver);
 		
 			final Solution s = solver.solve(f, b);
 			System.out.println(s);

@@ -230,15 +230,15 @@ public final class Lists {
 	 * Usage: java examples.Lists [scope]
 	 */
 	public  static void main(String[] args) {
-		if (args.length < 1)
-			usage();
+//		if (args.length < 1)
+//			usage();
 		try {
-			final int n = Integer.parseInt(args[0]);
+//			final int n = Integer.parseInt(args[0]);
 			final Lists model = new Lists();
 			
-			final Bounds b = model.bounds(n);
+			final Bounds b = model.bounds(3);
 			final Solver solver = new Solver();
-			solver.options().setSolver(SATFactory.MiniSat);
+			solver.options().setSolver(SATFactory.Z3Solver);
 //			solver.options().setFlatten(false);
 //			solver.options().setSkolemize(false);
 			
@@ -247,20 +247,20 @@ public final class Lists {
 			Solution s = solver.solve(f, b);
 			System.out.println(s);
 		
-			f = model.checkEmpties();
-			System.out.println("checking empties");
-			s = solver.solve(f, b);
-			System.out.println(s);
-			
-			f = model.checkReflexive();
-			System.out.println("checking reflexive");
-			s = solver.solve(f, b);
-			System.out.println(s);
-			
-			f = model.checkSymmetric();
-			System.out.println("checking symmetric");
-			s = solver.solve(f, b);
-			System.out.println(s);
+//			f = model.checkEmpties();
+//			System.out.println("checking empties");
+//			s = solver.solve(f, b);
+//			System.out.println(s);
+//
+//			f = model.checkReflexive();
+//			System.out.println("checking reflexive");
+//			s = solver.solve(f, b);
+//			System.out.println(s);
+//
+//			f = model.checkSymmetric();
+//			System.out.println("checking symmetric");
+//			s = solver.solve(f, b);
+//			System.out.println(s);
 	
 		} catch (NumberFormatException nfe) {
 			usage();
