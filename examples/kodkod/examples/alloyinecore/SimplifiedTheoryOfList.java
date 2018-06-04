@@ -6,18 +6,36 @@ import kodkod.ast.Variable;
 import kodkod.engine.Solution;
 import kodkod.engine.Solver;
 import kodkod.engine.satlab.SATFactory;
+import kodkod.engine.satlab.Z3Solver;
 import kodkod.instance.Bounds;
 import kodkod.instance.TupleFactory;
 import kodkod.instance.Universe;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 final class SimplifiedTheoryOfList {
 
     public static void main(String[] args) {
         SimplifiedTheoryOfList theoryOfList = new SimplifiedTheoryOfList();
         System.out.println(theoryOfList);
+
+        if (theoryOfList.solution.unsat()) {
+            System.out.println("High Level Core:");
+            theoryOfList.solution.proof().highLevelCore().keySet().forEach(System.out::println);
+            System.out.println();
+            System.out.println("Core:");
+            theoryOfList.solution.proof().core().forEachRemaining(record -> {
+                StringBuilder sb = new StringBuilder();
+                sb.append(record.node()).append("(");
+                sb.append(record.env().values().stream().flatMap(Collection::stream)
+                        .map(tuple -> tuple.atom(0).toString()).collect(Collectors.joining(", ")));
+                sb.append(")");
+                System.out.println(sb);
+            });
+        }
     }
 
     private List<Formula> formulaList;
@@ -139,6 +157,7 @@ final class SimplifiedTheoryOfList {
                 , bounds.upperBound(List).product(bounds.upperBound(List)));
 
         bounds.bound(car, tupleFactory.setOf(
+                tupleFactory.tuple(List0, Object0),
                 tupleFactory.tuple(List1, Object1),
                 tupleFactory.tuple(List2, Object0),
                 tupleFactory.tuple(List4, Object1),

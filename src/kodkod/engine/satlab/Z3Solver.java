@@ -33,7 +33,8 @@ public class Z3Solver implements SATSolver {
     private int quantifierID;
     private int skolemID;
 
-
+    private Set<Formula> unsatFormulaSet = new HashSet<>();
+    private Set<Map.Entry<Relation, Tuple>> unsatTupleSet = new HashSet<>();
 
     private long solvingTime = 0;
 
@@ -42,8 +43,11 @@ public class Z3Solver implements SATSolver {
     //qe goal
     private Goal qeGoal = null;
 
-    private Set<Expr> possibleExprs;
-    private Map<Expr, Map.Entry<Relation, Tuple>> exprTupleMap;
+    private Set<Expr> possibleExprs = new HashSet<>();
+    private Map<Expr, Map.Entry<Relation, Tuple>> exprTupleMap = new HashMap<>();
+    private Map<BoolExpr, Formula> boolExprFormulaMap = new HashMap<>();
+
+    private Map<BoolExpr, BoolExpr> assertionMap = new HashMap<>();
 
     public Z3Solver() {
         Global.setParameter("model.compact", "true");
@@ -70,6 +74,14 @@ public class Z3Solver implements SATSolver {
 
     public Instance getInstance() {
         return instance;
+    }
+
+    public Set<Map.Entry<Relation, Tuple>> getUnsatTupleSet() {
+        return unsatTupleSet;
+    }
+
+    public Set<Formula> getUnsatFormulaSet() {
+        return unsatFormulaSet;
     }
 
     private void makeAssertions(Formula formula, Bounds bounds) {
@@ -119,9 +131,6 @@ public class Z3Solver implements SATSolver {
             funcDeclMap.put(Relation.INTS, intsFuncDecl);
         }*/
 
-        possibleExprs = new HashSet<>();
-        exprTupleMap = new HashMap<>();
-
         bounds.relations().forEach(relation -> {
             Sort[] sorts = new Sort[relation.arity()];
             for (int i = 0; i < sorts.length; i++) {
@@ -167,7 +176,7 @@ public class Z3Solver implements SATSolver {
             }*/
         }
 
-        Map<BoolExpr, Formula> boolExprMap = separateFormula(formula).stream()
+        boolExprFormulaMap = separateFormula(formula).stream()
                 .collect(Collectors.toMap(f -> visit(f, 0, new Expr[] {})
                         , f -> f
                         , (a, b) -> a));
@@ -190,7 +199,7 @@ public class Z3Solver implements SATSolver {
             }
         });*/
 
-        boolExprMap.keySet().forEach(goal::add);
+        boolExprFormulaMap.keySet().forEach(goal::add);
 
         //Tactics
         Tactic t_qe = ctx.mkTactic("qe");//ctx.andThen(ctx.mkTactic("snf"), ctx.mkTactic("qe") );
@@ -210,7 +219,7 @@ public class Z3Solver implements SATSolver {
         Pattern pattern = Pattern.compile("([(][a-zA-Z0-9!]+( univ)[)])");
 
         for (int i = 0; i < originals.length; i++) {
-            Formula f = boolExprMap.get(originals[i]);
+            Formula f = boolExprFormulaMap.get(originals[i]);
             BoolExpr e = newOnes[i];
             int forallCount = 0;//e.getSExpr().split("forall").length - 1;
             Matcher matcher = pattern.matcher(e.getSExpr());
@@ -226,20 +235,28 @@ public class Z3Solver implements SATSolver {
                 System.out.println("Quantifiers: " + forallCount);
                 System.out.println();
             }
-            if (forallCount < 1)
-                solver.add(e);
-            else
-                qeGoal.add(e);
+            if (forallCount < 5) {
+                BoolExpr boolExpr = ctx.mkBoolConst("! " + e.toString());
+                assertionMap.put(boolExpr, originals[i]);
+                solver.assertAndTrack(e, boolExpr);
+            }
+            else {
+                Goal ge_goal = ctx.mkGoal(true, false, false);
+
+                ge_goal.add(e);
+
+                ApplyResult ar = t_qe.apply(ge_goal);
+
+                for (BoolExpr b : ar.getSubgoals()[0].getFormulas()) {
+                    BoolExpr boolExpr = ctx.mkBoolConst("! " + b.toString());
+                    assertionMap.put(boolExpr, originals[i]);
+                    solver.assertAndTrack(b, boolExpr);
+                }
+            }
         }
+        //end of tactics application
 
         System.out.println("----------------After Tactics----------------------");
-
-        ApplyResult ar = t_qe.apply(qeGoal);
-
-        for (BoolExpr e : ar.getSubgoals()[0].getFormulas())
-            solver.add(e);
-
-        //end of tactics application
         System.out.println(solver);
         System.out.println("---------------------------------------------------");
 
@@ -320,8 +337,25 @@ public class Z3Solver implements SATSolver {
                 System.out.println(instance);
                 break;
             case UNSATISFIABLE:
-                System.out.println("Unsat");
+                System.out.println("Unsat core:");
                 Arrays.stream(solver.getUnsatCore()).forEach(System.out::println);
+
+                Map<String, Formula> boolExprStrToFormula = new HashMap<>();
+                boolExprFormulaMap.forEach((b, f) -> boolExprStrToFormula.put(b.toString(), f));
+
+                unsatFormulaSet.clear();
+                unsatFormulaSet.clear();
+
+                Arrays.stream(solver.getUnsatCore()).forEach(boolExpr -> {
+                    BoolExpr assertion = assertionMap.get(boolExpr);
+                    if (exprTupleMap.containsKey(assertion)) {
+                        unsatTupleSet.add(exprTupleMap.get(assertion));
+                    }
+                    else if (boolExprFormulaMap.containsKey(assertion)) {
+                        unsatFormulaSet.add(boolExprFormulaMap.get(assertion));
+                    }
+                });
+
                 this.instance = null;
                 break;
             case UNKNOWN:
@@ -748,6 +782,19 @@ public class Z3Solver implements SATSolver {
         }
 
         return ctx.mkTrue();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Formulas:").append(System.lineSeparator()).append(System.lineSeparator());
+        Arrays.stream(goal.getFormulas()).forEach(boolExpr -> {
+            sb.append(boolExpr).append(System.lineSeparator());
+        });
+        sb.append(System.lineSeparator()).append(System.lineSeparator());
+        sb.append("All input:").append(System.lineSeparator()).append(System.lineSeparator());
+        sb.append(solver);
+        return sb.toString();
     }
 
     @Override

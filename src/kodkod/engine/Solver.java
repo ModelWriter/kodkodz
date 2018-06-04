@@ -21,20 +21,14 @@
  */
 package kodkod.engine;
 
-import kodkod.ast.Formula;
-import kodkod.ast.IntExpression;
-import kodkod.ast.Relation;
+import kodkod.ast.*;
 import kodkod.engine.config.Options;
 import kodkod.engine.fol2sat.*;
 import kodkod.engine.satlab.*;
-import kodkod.instance.Bounds;
-import kodkod.instance.Instance;
-import kodkod.instance.TupleSet;
+import kodkod.instance.*;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 /** 
@@ -121,6 +115,52 @@ public final class Solver implements KodkodSolver {
 	 * @see Instance
 	 * @see Proof
 	 */
+	private Proof makeProof(Set<Formula> formulaSet, Set<Map.Entry<Relation, Tuple>> tupleSet) {
+	    return new Proof(null) {
+            @Override
+            public void minimize(ReductionStrategy strategy) {}
+
+            @Override
+            public Iterator<TranslationRecord> core() {
+                Set<TranslationRecord> translationRecords = tupleSet.stream().map(relationTupleEntry -> new TranslationRecord() {
+
+                    @Override
+                    public Node node() {
+                        return relationTupleEntry.getKey();
+                    }
+
+                    @Override
+                    public Formula translated() {
+                        return null;
+                    }
+
+                    @Override
+                    public int literal() {
+                        return relationTupleEntry.getKey().arity();
+                    }
+
+                    @Override
+                    public Map<Variable, TupleSet> env() {
+                        Map<Variable, TupleSet> map = new HashMap<>();
+                        TupleFactory tf = relationTupleEntry.getValue().universe().factory();
+                        for (int i = 0; i < relationTupleEntry.getKey().arity(); i++) {
+                            Variable variable = Variable.nary("v" + i, relationTupleEntry.getKey().arity());
+                            map.put(variable, tf.setOf(tf.tuple(relationTupleEntry.getValue().atom(i))));
+                        }
+                        return map;
+                    }
+                }).collect(Collectors.toSet());
+
+                return translationRecords.iterator();
+            }
+
+            @Override
+            public Map<Formula, Node> highLevelCore() {
+                return formulaSet.stream().collect(Collectors.toMap(f -> f, f -> f));
+            }
+        };
+    }
+
 	public Solution solve(Formula formula, Bounds bounds) throws HigherOrderDeclException, UnboundLeafException, AbortedException {
 
 		final long startTransl = System.currentTimeMillis();
@@ -142,7 +182,7 @@ public final class Solver implements KodkodSolver {
                 }
                 else {
                     // TODO: Get proof
-                    final Solution sol = Solution.unsatisfiable(stats, null);
+                    final Solution sol = Solution.unsatisfiable(stats, makeProof(z3Solver.getUnsatFormulaSet(), z3Solver.getUnsatTupleSet()));
                     return sol;
                 }
             }
@@ -214,7 +254,7 @@ public final class Solver implements KodkodSolver {
                             , z3Solver.getSolvingTimeInMilis());
 
                     if (instance == null) {
-                        return Solution.unsatisfiable(stats, null);
+                        return Solution.unsatisfiable(stats, makeProof(z3Solver.getUnsatFormulaSet(), z3Solver.getUnsatTupleSet()));
                     }
                     else {
                         return Solution.satisfiable(stats, instance);
