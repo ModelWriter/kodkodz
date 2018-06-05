@@ -157,6 +157,114 @@ final class TheoryOfList {
     public String toString() { return solution.toString();}
 }
 ```
-## Screencast
+## Translation
 
-[![](http://img.youtube.com/vi/tk9zRwSylIo/0.jpg)](http://www.youtube.com/watch?v=tk9zRwSylIo "Using SMT Solvers in Relational Logic")
+```smtlib
+kodkod: (Nil in List)
+z3:
+(forall ((x!0 univ)) (! (=> (Nil x!0) (List x!0)) :qid q!21))
+
+kodkod: (all l: one List | lone (l . car))
+z3:
+(forall ((l univ))
+  (! (let ((a!1 (forall ((y!1 univ) (z!1 univ))
+                  (! (=> (and (car l y!1) (car l z!1)) (and (= y!1 z!1)))
+                     :qid q!19))))
+       (=> (and (List l)) a!1))
+     :qid q!20))
+
+kodkod: (all l: one List | lone (l . cdr))
+z3:
+(forall ((l univ))
+  (! (let ((a!1 (forall ((y!1 univ) (z!1 univ))
+                  (! (=> (and (cdr l y!1) (cdr l z!1)) (and (= y!1 z!1)))
+                     :qid q!0))))
+       (=> (and (List l)) a!1)) :qid q!1))
+
+kodkod: (car in (List -> Object))
+z3:
+(forall ((x!0 univ) (x!1 univ))
+  (! (=> (car x!0 x!1) (and (List x!0) (Object x!1))) :qid q!18))
+
+kodkod: one Nil
+z3:
+(let ((a!1 (forall ((y!0 univ) (z!0 univ))
+             (! (=> (and (Nil y!0) (Nil z!0)) (and (= y!0 z!0))) :qid q!25))))
+  (and (exists ((y!0 univ)) (! (Nil y!0) :skolemid s!11 :qid q!26)) a!1))
+
+kodkod: no ((Nil . car) + (Nil . cdr))
+z3:
+(let ((a!1 (exists ((x!0 univ))
+             (! (or (exists ((x!1 univ))
+                      (! (and (Nil x!1) (car x!1 x!0)) :skolemid s!8 :qid q!22))
+                    (exists ((x!1 univ))
+                      (! (and (Nil x!1) (cdr x!1 x!0)) :skolemid s!9 :qid q!23)))
+                :skolemid s!10 :qid q!24))))
+  (not a!1))
+
+kodkod: (cdr in (List -> List))
+z3:
+(forall ((x!0 univ) (x!1 univ))
+  (! (=> (cdr x!0 x!1) (and (List x!0) (List x!1))) :qid q!12))
+
+kodkod: (all l: one (List - Nil) | (some (l . cdr) && some (l . car)))
+z3:
+(forall ((l univ))
+  (! (=> (and (List l) (not (Nil l)))
+         (and (exists ((x!1 univ)) (! (cdr l x!1) :skolemid s!4 :qid q!8))
+              (exists ((x!1 univ)) (! (car l x!1) :skolemid s!5 :qid q!9)))) :qid q!10))
+
+kodkod: (all [a: one List, b: one List] | ((a in (b . eq)) <=> 
+                        (((a . car) = (b . car)) && ((a . cdr) in ((b . cdr) . eq)))))
+z3:
+(forall ((a univ) (b univ))
+  (! (let ((a!1 (forall ((x!2 univ))
+                  (! (=> (cdr a x!2)
+                         (exists ((x!3 univ))
+                           (! (and (cdr b x!3) (eq x!3 x!2))
+                              :skolemid s!7
+                              :qid q!15))) :qid q!16))))
+     (let ((a!2 (and (forall ((x!2 univ))
+                       (! (= (car a x!2) (car b x!2)) :qid q!14)) a!1)))
+       (=> (and (List a) (List b)) (= (eq b a) a!2)))) :qid q!17))
+
+kodkod: (all l: one List | (Nil in (l . *cdr)))
+z3:
+(forall ((l univ))
+  (! (=> (and (List l))
+         (forall ((x!1 univ))
+           (! (let ((a!1 (or (= l x!1)
+                     (exists ((x!3 univ))
+                       (! (let ((a!1 (or (= x!3 x!1)
+                                 (exists ((x!4 univ))
+                                   (! (let ((a!1 (or (= x!4 x!1)
+                                             (exists ((x!5 univ))
+                                               (! (let ((a!1 (or (= x!5 x!1)
+                                                                 (exists ((x!6 univ))
+                                                                   (! (and (cdr x!5 x!6)
+                                                                           (= x!6 x!1))
+                                                                      :skolemid s!0
+                                                                      :qid q!2)))))
+                                                    (and (cdr x!4 x!5) a!1))
+                                                  :skolemid s!1
+                                                  :qid q!3)))))
+                                        (and (cdr x!3 x!4) a!1))
+                                      :skolemid s!2
+                                      :qid q!4)))))
+                            (and (cdr l x!3) a!1))
+                          :skolemid s!3
+                          :qid q!5)))))
+                (=> (Nil x!1) a!1))
+              :qid q!6)))
+     :qid q!7))
+
+kodkod: (eq in (List -> List))
+z3:
+(forall ((x!0 univ) (x!1 univ))
+  (! (=> (eq x!0 x!1) (and (List x!0) (List x!1))) :qid q!13))
+
+kodkod: no (Object & List)
+z3:
+(not (exists ((x!0 univ))
+       (! (and (Object x!0) (List x!0)) :skolemid s!6 :qid q!11)))
+```
