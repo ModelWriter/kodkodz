@@ -271,7 +271,14 @@ z3:
 
 ## Outcome
 ```vi
-relations: {List=[[List0], [List1], [List2], [List3], [List4], [List5]], eq=[[List0, List0], [List1, List1], [List1, List4], [List2, List2], [List2, List3], [List3, List2], [List3, List3], [List4, List1], [List4, List4], [List5, List5]], car=[[List0, Object1], [List1, Object1], [List2, Object0], [List3, Object0], [List4, Object1]], cdr=[[List0, List5], [List1, List2], [List2, List0], [List3, List0], [List4, List3]], Nil=[[List5]], Object=[[Object0], [Object1]]}
+---INSTANCE---
+relations: {
+List=[[List0], [List1], [List2], [List3], [List4], [List5]], 
+eq=[[List0, List0], [List1, List1], [List1, List4], [List2, List2], [List2, List3], [List3, List2], [List3, List3], [List4, List1], [List4, List4], [List5, List5]],
+car=[[List0, Object1], [List1, Object1], [List2, Object0], [List3, Object0], [List4, Object1]], 
+cdr=[[List0, List5], [List1, List2], [List2, List0], [List3, List0], [List4, List3]],
+Nil=[[List5]], 
+Object=[[Object0], [Object1]]}
 ints: []
 ---OUTCOME---
 SATISFIABLE
