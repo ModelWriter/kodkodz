@@ -4,6 +4,8 @@ We present a tool for finding finite models and cores of constraints expressed i
 
 [Screencast](https://youtu.be/tk9zRwSylIo) 
 
+[![](http://img.youtube.com/vi/tk9zRwSylIo/0.jpg)](http://www.youtube.com/watch?v=tk9zRwSylIo "Using SMT Solvers in Relational Logic")
+
 ## Example Usage
 
 ```java
