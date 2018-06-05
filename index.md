@@ -1,37 +1,4 @@
-## Welcome to GitHub Pages
+## Using SMT Solvers in Finding Finite Models and Cores for Relational Logic
 
-You can use the [editor on GitHub](https://github.com/ModelWriter/kodkodz/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ModelWriter/kodkodz/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+We present a tool for finding finite models and cores of constraints expressed in First-order Relational Logic, namely Alloy, using SMT solvers. Alloy has become a popular choice in automated software engineering community, exploited in solving different problems of design analysis, program verification, test-case generation, and declarative configuration. Its underlying engine, KodKod, relies on performing a full reduction of a relational logic formula to an equisatisfiable propositional formula, using novel algorithms and techniques in translation and symmetry breaking. However, this eager encoding of relational logic does not benefit from the advantages of the lazy encoding framework, DPLL(T), that is based on an interplay between a modern CDCL-based SAT solver and a theory solver, which is the main technique used in award-winning Satisfiability Modulo Theories (SMT) Solvers such as Z3 and CVC4. They are particularly good at deciding on combinations of quantifier-free fragments of first-order theories; however, they are increasingly gaining performance in dealing with quantifiers as well. For that reason, our tool provides software engineers a mean to benefit from SMT solvers and their quantifier installation techniques using Relation Logic in the front-end. The tool has been successfully integrated into a platform to facilitate automated reasoning on metamodels and partial models as well as being integrated with Alloy Analyzer itself.
+[Screencast](https://youtu.be/tk9zRwSylIo) 
