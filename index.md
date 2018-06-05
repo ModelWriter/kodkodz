@@ -6,7 +6,7 @@ We present a tool for finding finite models and cores of constraints expressed i
 
 ## Example Usage
 
-```
+```java
 package kodkod.examples.alloyinecore;
 
 import kodkod.ast.Formula;
