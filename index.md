@@ -159,7 +159,7 @@ final class TheoryOfList {
 ```
 ## Translation
 
-```smtlib
+```haskell
 kodkod: (Nil in List)
 z3:
 (forall ((x!0 univ)) (! (=> (Nil x!0) (List x!0)) :qid q!21))
@@ -267,4 +267,22 @@ kodkod: no (Object & List)
 z3:
 (not (exists ((x!0 univ))
        (! (and (Object x!0) (List x!0)) :skolemid s!6 :qid q!11)))
+```
+
+## Outcome
+```vi
+relations: {List=[[List0], [List1], [List2], [List3], [List4], [List5]], eq=[[List0, List0], [List1, List1], [List1, List4], [List2, List2], [List2, List3], [List3, List2], [List3, List3], [List4, List1], [List4, List4], [List5, List5]], car=[[List0, Object1], [List1, Object1], [List2, Object0], [List3, Object0], [List4, Object1]], cdr=[[List0, List5], [List1, List2], [List2, List0], [List3, List0], [List4, List3]], Nil=[[List5]], Object=[[Object0], [Object1]]}
+ints: []
+---OUTCOME---
+SATISFIABLE
+
+---INSTANCE---
+relations: {List=[[List0], [List1], [List2], [List3], [List4], [List5]], eq=[[List0, List0], [List1, List1], [List1, List4], [List2, List2], [List2, List3], [List3, List2], [List3, List3], [List4, List1], [List4, List4], [List5, List5]], car=[[List0, Object1], [List1, Object1], [List2, Object0], [List3, Object0], [List4, Object1]], cdr=[[List0, List5], [List1, List2], [List2, List0], [List3, List0], [List4, List3]], Nil=[[List5]], Object=[[Object0], [Object1]]}
+ints: []
+
+---STATS---
+p cnf 0 0
+primary variables: 0
+translation time: 990 ms
+solving time: 7137 ms
 ```
