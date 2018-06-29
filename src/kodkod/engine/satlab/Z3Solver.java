@@ -784,6 +784,100 @@ public class Z3Solver implements SATSolver {
         return ctx.mkTrue();
     }
 
+    private BitVecExpr visitInteger(IntExpression node) {
+        if (node instanceof kodkod.ast.IntConstant) {
+            IntConstant intConstant = (IntConstant) node;
+            ctx.mkBVConst(intConstant.toString(), intConstant.value());
+        }
+        else if (node instanceof kodkod.ast.ExprToIntCast) {
+            ExprToIntCast exprToIntCast = (ExprToIntCast) node;
+            switch (exprToIntCast.op()) {
+                case CARDINALITY:
+                    // TODO: What is this?
+                    break;
+                case SUM:
+                    // TODO: What is this?
+                    break;
+            }
+        }
+        else if (node instanceof UnaryIntExpression) {
+            UnaryIntExpression unaryIntExpression = (UnaryIntExpression) node;
+            BitVecExpr expr = visitInteger(unaryIntExpression.intExpr());
+            switch (unaryIntExpression.op()) {
+                case SGN:
+                    // TODO: What is this?
+                    break;
+                case NOT:
+                    return ctx.mkBVNot(expr);
+                case NEG:
+                    return ctx.mkBVNeg(expr);
+                case ABS:
+                    // TODO: What is this?
+                    break;
+            }
+        }
+        else if (node instanceof BinaryIntExpression) {
+            BinaryIntExpression binaryIntExpression = (BinaryIntExpression) node;
+            BitVecExpr left = visitInteger(binaryIntExpression.left());
+            BitVecExpr right = visitInteger(binaryIntExpression.right());
+            switch (binaryIntExpression.op()) {
+                case AND:
+                    return ctx.mkBVAND(left, right);
+                case OR:
+                    return ctx.mkBVOR(left, right);
+                case SHA:
+                    // TODO: What is this?
+                    break;
+                case SHL:
+                    return ctx.mkBVSHL(left, right);
+                case SHR:
+                    return ctx.mkBVASHR(left, right);
+                case XOR:
+                    return ctx.mkBVXOR(left, right);
+                case PLUS:
+                    return ctx.mkBVAdd(left, right);
+                case MINUS:
+                    return ctx.mkBVSub(left, right);
+                case DIVIDE:
+                    return ctx.mkBVSDiv(left, right);
+                case MODULO:
+                    return ctx.mkBVSMod(left, right);
+                case MULTIPLY:
+                    return ctx.mkBVMul(left, right);
+            }
+        }
+        else if (node instanceof kodkod.ast.NaryIntExpression) {
+            NaryIntExpression naryIntExpression = (NaryIntExpression) node;
+            Iterator<IntExpression> iterator = naryIntExpression.iterator();
+            if (iterator.hasNext()) {
+                BitVecExpr expr = visitInteger(iterator.next());
+                switch (naryIntExpression.op()) {
+                    case MULTIPLY:
+                        while (iterator.hasNext()) {
+                            expr = ctx.mkBVMul(expr, visitInteger(iterator.next()));
+                        }
+                        return expr;
+                    case PLUS:
+                        while (iterator.hasNext()) {
+                            expr = ctx.mkBVAdd(expr, visitInteger(iterator.next()));
+                        }
+                        return expr;
+                    case AND:
+                        while (iterator.hasNext()) {
+                            expr = ctx.mkBVAND(expr, visitInteger(iterator.next()));
+                        }
+                        return expr;
+                    case OR:
+                        while (iterator.hasNext()) {
+                            expr = ctx.mkBVOR(expr, visitInteger(iterator.next()));
+                        }
+                        return expr;
+                }
+            }
+        }
+        return ctx.mkBVConst("null", 0);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
