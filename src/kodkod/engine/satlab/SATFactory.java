@@ -109,6 +109,12 @@ public abstract class SATFactory {
 		public String toString() { return solver.toString(); }
 	};
 
+	public static final SATFactory AssertionChecker = new SATFactory() {
+		public SATSolver instance() { return new AssertionChecker(); }
+		public boolean prover() { return true; }
+		public String toString() { return "Assertion Checker"; }
+	};
+
 	public static final SATFactory Z3CNFSolver = new SATFactory() {
 		public SATSolver instance() {
 			return new Z3CNFSolver();

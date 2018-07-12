@@ -111,7 +111,7 @@ public abstract class NQueens {
 			System.out.println("encoding:");
 			System.out.println(PrettyPrinter.print(f, 1));
 
-			s.options().setSolver(SATFactory.MiniSat);
+			s.options().setSolver(SATFactory.Z3Solver);
 			s.options().setBitwidth(33 - Integer.numberOfLeadingZeros(n - 1));
 			s.options().setReporter(new ConsoleReporter());
 			
