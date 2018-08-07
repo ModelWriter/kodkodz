@@ -337,7 +337,7 @@ public final class orderingCorrectCheck2 {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x15, x19, x20, x198, x199, x200, x201, x202, x203, x204, x205, x206, x207, x208);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

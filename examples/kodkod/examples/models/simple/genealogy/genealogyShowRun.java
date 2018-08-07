@@ -317,7 +317,7 @@ public final class genealogyShowRun {
         Formula x12=Formula.compose(FormulaOperator.AND, x13, x17, x25, x28, x33, x35, x42, x57, x60, x62, x68, x70, x72, x74, x83, x91, x98, x99, x100, x101, x102, x103, x104, x105, x106, x107, x108, x109);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

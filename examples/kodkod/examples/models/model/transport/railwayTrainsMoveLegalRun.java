@@ -381,7 +381,7 @@ public final class railwayTrainsMoveLegalRun {
         Formula x15=Formula.compose(FormulaOperator.AND, x16, x21, x24, x29, x31, x36, x38, x58, x61, x66, x68, x73, x85, x99, x159, x160, x161, x162, x163, x164, x165, x166, x167, x168, x169, x170, x171, x172, x173);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -818,7 +818,7 @@ public final class paragraphNumberingAddNeverReducesCheck {
         Formula x18=Formula.compose(FormulaOperator.AND, x19, x26, x29, x35, x37, x42, x44, x64, x67, x73, x75, x81, x84, x91, x93, x110, x117, x135, x151, x152, x153, x258, x259, x260, x261, x262, x263, x264, x265, x266, x267, x268, x269, x270, x271, x272, x273, x274, x275);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

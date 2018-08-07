@@ -797,7 +797,7 @@ public final class INSLabelRun {
         Formula x29=Formula.compose(FormulaOperator.AND, x30, x32, x36, x38, x41, x50, x53, x60, x64, x67, x93, x169, x175, x177, x183, x185, x258, x265, x267, x272, x274, x302, x305, x322, x328, x335, x371, x450, x463, x464, x465, x466, x467, x468, x469, x470, x471, x472, x473, x474, x475, x476, x477, x478, x479, x480, x481, x482, x483, x484, x485, x486, x487, x488, x489, x490, x491);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

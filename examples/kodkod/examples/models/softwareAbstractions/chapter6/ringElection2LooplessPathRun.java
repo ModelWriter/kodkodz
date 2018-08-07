@@ -685,7 +685,7 @@ public final class ringElection2LooplessPathRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x27, x30, x36, x39, x44, x46, x49, x53, x54, x57, x61, x62, x68, x70, x87, x93, x153, x166, x167, x168, x169, x170, x171, x172, x173, x174, x175, x176, x177, x178, x179, x180, x181, x182, x183, x184);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

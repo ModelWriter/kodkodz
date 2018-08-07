@@ -1033,7 +1033,7 @@ public final class petersonSafetyCheck {
         Formula x26=Formula.compose(FormulaOperator.AND, x27, x29, x32, x35, x38, x45, x49, x55, x58, x64, x67, x73, x76, x79, x83, x84, x87, x91, x92, x97, x113, x377, x398, x399, x400, x401, x402, x403, x404, x405, x406, x407, x408, x409, x410, x411, x412, x413, x414, x415, x416, x417, x418, x419, x420, x421, x422, x423);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

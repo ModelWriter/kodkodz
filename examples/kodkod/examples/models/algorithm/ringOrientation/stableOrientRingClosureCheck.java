@@ -658,7 +658,7 @@ public final class stableOrientRingClosureCheck {
         Formula x22=Formula.compose(FormulaOperator.AND, x23, x25, x32, x35, x42, x44, x51, x53, x58, x60, x81, x84, x104, x107, x127, x130, x136, x139, x154, x157, x161, x162, x182, x201, x322, x384, x385, x386, x387, x388, x389, x390, x391, x392, x393, x394, x395, x396, x397, x398, x399, x400, x401, x402, x403, x404, x405);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

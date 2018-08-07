@@ -1,0 +1,556 @@
+Aug 7, 2018 7:23:28 PM
+
+kodkod.examples.models.algorithm.discovery.INSLabelCheck is being tested.
+Test 1 is started.
+Time: 2137 ms
+Test 2 is started.
+Time: 1184 ms
+Test 3 is started.
+Time: 1224 ms
+Test 4 is started.
+Time: 349 ms
+Test 5 is started.
+Time: 356 ms
+
+kodkod.examples.models.algorithm.discovery.INSLabelRun is being tested.
+Test 1 is started.
+Time: 80 ms
+Test 2 is started.
+Time: 82 ms
+Test 3 is started.
+Time: 106 ms
+Test 4 is started.
+Time: 95 ms
+Test 5 is started.
+Time: 91 ms
+
+kodkod.examples.models.algorithm.election.ringleadLeaderHighestCheck is being tested.
+Test 1 is started.
+Time: 664 ms
+Test 2 is started.
+Time: 475 ms
+Test 3 is started.
+Time: 451 ms
+Test 4 is started.
+Time: 484 ms
+Test 5 is started.
+Time: 475 ms
+
+kodkod.examples.models.algorithm.election.ringleadLivenessCheck is being tested.
+Test 1 is started.
+Time: 15 ms
+Test 2 is started.
+Time: 19 ms
+Test 3 is started.
+Time: 16 ms
+Test 4 is started.
+Time: 16 ms
+Test 5 is started.
+Time: 15 ms
+
+kodkod.examples.models.algorithm.election.ringleadNeverFindLeaderRun is being tested.
+Test 1 is started.
+Time: 15 ms
+Test 2 is started.
+Time: 14 ms
+Test 3 is started.
+Time: 14 ms
+Test 4 is started.
+Time: 15 ms
+Test 5 is started.
+Time: 14 ms
+
+kodkod.examples.models.algorithm.election.ringleadOneLeaderCheck is being tested.
+Test 1 is started.
+Time: 14 ms
+Test 2 is started.
+Time: 14 ms
+Test 3 is started.
+Time: 13 ms
+Test 4 is started.
+Time: 15 ms
+Test 5 is started.
+Time: 19 ms
+
+kodkod.examples.models.algorithm.election.ringleadSomeLeaderRun is being tested.
+Test 1 is started.
+Time: 169 ms
+Test 2 is started.
+Time: 157 ms
+Test 3 is started.
+Time: 153 ms
+Test 4 is started.
+Time: 169 ms
+Test 5 is started.
+Time: 134 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadCBadLivenessTraceRun is being tested.
+Test 1 is started.
+Time: 260 ms
+Test 2 is started.
+Time: 294 ms
+Test 3 is started.
+Time: 243 ms
+Test 4 is started.
+Time: 205 ms
+Test 5 is started.
+Time: 255 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadCMustConvergeCheck is being tested.
+Test 1 is started.
+Time: 95 ms
+Test 2 is started.
+Time: 124 ms
+Test 3 is started.
+Time: 104 ms
+Test 4 is started.
+Time: 130 ms
+Test 5 is started.
+Time: 141 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadCoveringRun is being tested.
+Test 1 is started.
+Time: 58 ms
+Test 2 is started.
+Time: 54 ms
+Test 3 is started.
+Time: 64 ms
+Test 4 is started.
+Time: 62 ms
+Test 5 is started.
+Time: 49 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadCTraceWithoutLoopRun is being tested.
+Test 1 is started.
+Time: 47 ms
+Test 2 is started.
+Time: 47 ms
+Test 3 is started.
+Time: 53 ms
+Test 4 is started.
+Time: 41 ms
+Test 5 is started.
+Time: 45 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadDBadLivenessTraceRun is being tested.
+Test 1 is started.
+Time: 45 ms
+Test 2 is started.
+Time: 45 ms
+Test 3 is started.
+Time: 35 ms
+Test 4 is started.
+Time: 39 ms
+Test 5 is started.
+Time: 35 ms
+
+kodkod.examples.models.algorithm.election.stable_ringleadDTraceWithoutLoopRun is being tested.
+Test 1 is started.
+Time: 46 ms
+Test 2 is started.
+Time: 40 ms
+Test 3 is started.
+Time: 40 ms
+Test 4 is started.
+Time: 35 ms
+Test 5 is started.
+Time: 34 ms
+
+kodkod.examples.models.algorithm.gc.marksweepgcCompletenessCheck is being tested.
+Test 1 is started.
+Time: 10 ms
+Test 2 is started.
+Time: 7 ms
+Test 3 is started.
+Time: 9 ms
+Test 4 is started.
+Time: 8 ms
+Test 5 is started.
+Time: 9 ms
+
+kodkod.examples.models.algorithm.gc.marksweepgcSoundness1Check is being tested.
+Test 1 is started.
+Time: 10 ms
+Test 2 is started.
+Time: 13 ms
+Test 3 is started.
+Time: 13 ms
+Test 4 is started.
+Time: 9 ms
+Test 5 is started.
+Time: 13 ms
+
+kodkod.examples.models.algorithm.gc.marksweepgcSoundness2Check is being tested.
+Test 1 is started.
+Time: 11 ms
+Test 2 is started.
+Time: 12 ms
+Test 3 is started.
+Time: 9 ms
+Test 4 is started.
+Time: 11 ms
+Test 5 is started.
+Time: 8 ms
+
+kodkod.examples.models.algorithm.multicasting.iolusOutsiderCantReadCheck is being tested.
+Test 1 is started.
+Time: 2049 ms
+Test 2 is started.
+Time: 2173 ms
+Test 3 is started.
+Time: 2215 ms
+Test 4 is started.
+Time: 2065 ms
+Test 5 is started.
+Time: 1916 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstra2ProcessDeadlockRun is being tested.
+Test 1 is started.
+Time: 5 ms
+Test 2 is started.
+Time: 4 ms
+Test 3 is started.
+Time: 4 ms
+Test 4 is started.
+Time: 4 ms
+Test 5 is started.
+Time: 3 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstra2ProcessDijkstraPreventsDeadlocksCheck is being tested.
+Test 1 is started.
+Time: 114 ms
+Test 2 is started.
+Time: 116 ms
+Test 3 is started.
+Time: 114 ms
+Test 4 is started.
+Time: 114 ms
+Test 5 is started.
+Time: 119 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstra2ProcessShowDijkstraRun is being tested.
+Test 1 is started.
+Time: 9 ms
+Test 2 is started.
+Time: 8 ms
+Test 3 is started.
+Time: 7 ms
+Test 4 is started.
+Time: 7 ms
+Test 5 is started.
+Time: 8 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstraKStateClosureCheck is being tested.
+Test 1 is started.
+Time: 3111 ms
+Test 2 is started.
+Time: 3108 ms
+Test 3 is started.
+Time: 2984 ms
+Test 4 is started.
+Time: 3040 ms
+Test 5 is started.
+Time: 3055 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstraKStateTraceShorterThanMaxLoopRun is being tested.
+Test 1 is started.
+Time: 8 ms
+Test 2 is started.
+Time: 9 ms
+Test 3 is started.
+Time: 7 ms
+Test 4 is started.
+Time: 9 ms
+Test 5 is started.
+Time: 7 ms
+
+kodkod.examples.models.algorithm.mutex.dijkstraKStateTwoPrivilegedRun is being tested.
+Test 1 is started.
+Time: 14 ms
+Test 2 is started.
+Time: 14 ms
+Test 3 is started.
+Time: 16 ms
+Test 4 is started.
+Time: 15 ms
+Test 5 is started.
+Time: 13 ms
+
+kodkod.examples.models.algorithm.mutex.petersonNotStuckCheck is being tested.
+Test 1 is started.
+Time: 191 ms
+Test 2 is started.
+Time: 190 ms
+Test 3 is started.
+Time: 187 ms
+Test 4 is started.
+Time: 169 ms
+Test 5 is started.
+Time: 170 ms
+
+kodkod.examples.models.algorithm.mutex.petersonSafetyCheck is being tested.
+Test 1 is started.
+Time: 48 ms
+Test 2 is started.
+Time: 51 ms
+Test 3 is started.
+Time: 47 ms
+Test 4 is started.
+Time: 48 ms
+Test 5 is started.
+Time: 52 ms
+
+kodkod.examples.models.algorithm.mutex.petersonTwoRun is being tested.
+Test 1 is started.
+Time: 109 ms
+Test 2 is started.
+Time: 118 ms
+Test 3 is started.
+Time: 111 ms
+Test 4 is started.
+Time: 102 ms
+Test 5 is started.
+Time: 111 ms
+
+kodkod.examples.models.algorithm.ringOrientation.stableOrientRingClosureCheck is being tested.
+Test 1 is started.
+Time: 10 ms
+Test 2 is started.
+Time: 9 ms
+Test 3 is started.
+Time: 9 ms
+Test 4 is started.
+Time: 8 ms
+Test 5 is started.
+Time: 13 ms
+
+kodkod.examples.models.algorithm.ringOrientation.stableOrientRingSomeStateRun is being tested.
+Test 1 is started.
+Time: 11 ms
+Test 2 is started.
+Time: 7 ms
+Test 3 is started.
+Time: 10 ms
+Test 4 is started.
+Time: 7 ms
+Test 5 is started.
+Time: 9 ms
+
+kodkod.examples.models.algorithm.spanningTree.opt_spanTreeBadLivenessTraceRun is being tested.
+Test 1 is started.
+Time: 201 ms
+Test 2 is started.
+Time: 171 ms
+Test 3 is started.
+Time: 156 ms
+Test 4 is started.
+Time: 160 ms
+Test 5 is started.
+Time: 146 ms
+
+kodkod.examples.models.algorithm.spanningTree.opt_spanTreeClosureCheck is being tested.
+Test 1 is started.
+Time: 207 ms
+Test 2 is started.
+Time: 214 ms
+Test 3 is started.
+Time: 218 ms
+Test 4 is started.
+Time: 193 ms
+Test 5 is started.
+Time: 205 ms
+
+kodkod.examples.models.algorithm.spanningTree.opt_spanTreeSuccessfulRun is being tested.
+Test 1 is started.
+Time: 21 ms
+Test 2 is started.
+Time: 20 ms
+Test 3 is started.
+Time: 21 ms
+Test 4 is started.
+Time: 28 ms
+Test 5 is started.
+Time: 21 ms
+
+kodkod.examples.models.algorithm.synchronsation.syncimplCorrectnessCheck is being tested.
+Test 1 is started.
+Time: 6 ms
+Test 2 is started.
+Time: 5 ms
+Test 3 is started.
+Time: 6 ms
+Test 4 is started.
+Time: 6 ms
+Test 5 is started.
+Time: 5 ms
+
+kodkod.examples.models.algorithm.synchronsation.syncSpecNotUniqueRun is being tested.
+Test 1 is started.
+Time: 731 ms
+Test 2 is started.
+Time: 707 ms
+Test 3 is started.
+Time: 709 ms
+Test 4 is started.
+Time: 706 ms
+Test 5 is started.
+Time: 708 ms
+
+kodkod.examples.models.model.java.javatypesRun is being tested.
+Test 1 is started.
+Time: 3 ms
+Test 2 is started.
+Time: 2 ms
+Test 3 is started.
+Time: 3 ms
+Test 4 is started.
+Time: 3 ms
+Test 5 is started.
+Time: 3 ms
+
+kodkod.examples.models.model.microsoftCom.comTheorem1Check is being tested.
+Test 1 is started.
+Time: 12 ms
+Test 2 is started.
+Time: 10 ms
+Test 3 is started.
+Time: 13 ms
+Test 4 is started.
+Time: 14 ms
+Test 5 is started.
+Time: 12 ms
+
+kodkod.examples.models.model.microsoftCom.comTheorem2Check is being tested.
+Test 1 is started.
+Time: 13 ms
+Test 2 is started.
+Time: 12 ms
+Test 3 is started.
+Time: 26 ms
+Test 4 is started.
+Time: 22 ms
+Test 5 is started.
+Time: 21 ms
+
+kodkod.examples.models.model.microsoftCom.comTheorem3Check is being tested.
+Test 1 is started.
+Time: 21 ms
+Test 2 is started.
+Time: 18 ms
+Test 3 is started.
+Time: 18 ms
+Test 4 is started.
+Time: 20 ms
+Test 5 is started.
+Time: 19 ms
+
+kodkod.examples.models.model.microsoftCom.comTheorem4aCheck is being tested.
+Test 1 is started.
+Time: 25 ms
+Test 2 is started.
+Time: 23 ms
+Test 3 is started.
+Time: 21 ms
+Test 4 is started.
+Time: 21 ms
+Test 5 is started.
+Time: 20 ms
+
+kodkod.examples.models.model.microsoftCom.comTheorem4bCheck is being tested.
+Test 1 is started.
+Time: 18 ms
+Test 2 is started.
+Time: 17 ms
+Test 3 is started.
+Time: 18 ms
+Test 4 is started.
+Time: 16 ms
+Test 5 is started.
+Time: 17 ms
+
+kodkod.examples.models.model.transport.railwayPolicyWorksCheck is being tested.
+Test 1 is started.
+Time: 6 ms
+Test 2 is started.
+Time: 8 ms
+Test 3 is started.
+Time: 8 ms
+Test 4 is started.
+Time: 6 ms
+Test 5 is started.
+Time: 8 ms
+
+kodkod.examples.models.model.transport.railwayTrainsMoveLegalRun is being tested.
+Test 1 is started.
+Time: 7 ms
+Test 2 is started.
+Time: 8 ms
+Test 3 is started.
+Time: 7 ms
+Test 4 is started.
+Time: 6 ms
+Test 5 is started.
+Time: 6 ms
+
+kodkod.examples.models.model.typography.paragraphNumberingAddNeverReducesCheck is being tested.
+Test 1 is started.
+Time: 28 ms
+Test 2 is started.
+Time: 27 ms
+Test 3 is started.
+Time: 24 ms
+Test 4 is started.
+Time: 35 ms
+Test 5 is started.
+Time: 42 ms
+
+kodkod.examples.models.model.typography.paragraphNumberingPreserveForestCheck is being tested.
+Test 1 is started.
+Time: 59 ms
+Test 2 is started.
+Time: 40 ms
+Test 3 is started.
+Time: 41 ms
+Test 4 is started.
+Time: 43 ms
+Test 5 is started.
+Time: 44 ms
+
+kodkod.examples.models.puzzle.farmerChickenFox.farmerNoQuantumObjectCheck is being tested.
+Test 1 is started.
+Time: 16 ms
+Test 2 is started.
+Time: 11 ms
+Test 3 is started.
+Time: 13 ms
+Test 4 is started.
+Time: 11 ms
+Test 5 is started.
+Time: 11 ms
+
+kodkod.examples.models.puzzle.farmerChickenFox.farmerSolvePuzzleRun is being tested.
+Test 1 is started.
+Time: 5 ms
+Test 2 is started.
+Time: 7 ms
+Test 3 is started.
+Time: 5 ms
+Test 4 is started.
+Time: 6 ms
+Test 5 is started.
+Time: 5 ms
+
+kodkod.examples.models.puzzle.halmosHandshake.handshakeP10Run is being tested.
+Test 1 is started.
+Time: 1158 ms
+Test 2 is started.
+Time: 1085 ms
+Test 3 is started.
+Time: 1046 ms
+Test 4 is started.
+Time: 1052 ms
+Test 5 is started.
+Time: 1049 ms
+
+kodkod.examples.models.puzzle.halmosHandshake.handshakeP12Run is being tested.
+Test 1 is started.

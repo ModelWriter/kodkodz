@@ -574,7 +574,7 @@ public final class comTheorem2Check {
         Formula x21=Formula.compose(FormulaOperator.AND, x22, x43, x47, x52, x54, x61, x63, x70, x72, x90, x95, x97, x102, x104, x112, x114, x122, x124, x129, x131, x136, x138, x150, x164, x183, x194, x196, x202, x215, x228, x235, x267, x281, x282, x283, x284, x285, x286, x287, x288, x289, x290, x291, x292, x293, x294, x295, x296, x297, x298, x299, x300, x301);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

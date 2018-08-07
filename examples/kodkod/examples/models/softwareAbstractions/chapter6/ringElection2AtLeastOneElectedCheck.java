@@ -524,7 +524,7 @@ public final class ringElection2AtLeastOneElectedCheck {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x27, x30, x36, x39, x44, x46, x49, x53, x54, x57, x61, x62, x68, x70, x87, x93, x153, x177, x178, x179, x180, x181, x182, x183, x184, x185, x186, x187, x188, x189, x190, x191, x192, x193, x194, x195);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

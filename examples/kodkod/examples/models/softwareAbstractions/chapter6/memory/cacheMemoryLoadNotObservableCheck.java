@@ -320,7 +320,7 @@ public final class cacheMemoryLoadNotObservableCheck {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x32, x36, x56, x59, x124, x125, x126, x127, x128, x129, x130, x131, x132, x133, x134);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

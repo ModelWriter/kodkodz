@@ -456,7 +456,7 @@ public final class mediaAssetsPasteNotAffectHiddenCheck {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x25, x28, x50, x53, x61, x63, x68, x70, x75, x77, x83, x85, x91, x93, x95, x102, x104, x112, x186, x187, x188, x189, x190, x191, x192, x193, x194, x195, x196, x197, x198, x199, x200, x201, x202, x203, x204);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

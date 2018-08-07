@@ -287,7 +287,7 @@ public final class grandpa3SameCheck {
         Formula x12=Formula.compose(FormulaOperator.AND, x13, x15, x22, x25, x32, x34, x42, x44, x51, x53, x61, x63, x68, x111, x112, x113, x114, x115, x116, x117, x118, x119, x120, x121, x122);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

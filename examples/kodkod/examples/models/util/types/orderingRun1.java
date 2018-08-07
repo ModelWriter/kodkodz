@@ -151,7 +151,7 @@ public final class orderingRun1 {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x15, x19, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29, x30);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -928,7 +928,7 @@ public final class INSLabelCheck {
         Formula x29=Formula.compose(FormulaOperator.AND, x30, x32, x36, x38, x41, x50, x53, x60, x64, x67, x93, x169, x175, x177, x183, x185, x258, x265, x267, x272, x274, x302, x305, x322, x328, x335, x371, x450, x539, x540, x541, x542, x543, x544, x545, x546, x547, x548, x549, x550, x551, x552, x553, x554, x555, x556, x557, x558, x559, x560, x561, x562, x563, x564, x565, x566, x567);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

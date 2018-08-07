@@ -1209,7 +1209,7 @@ public final class syncimplCorrectnessCheck {
         Formula x23=Formula.compose(FormulaOperator.AND, x24, x26, x35, x39, x45, x48, x54, x57, x63, x66, x71, x73, x80, x82, x89, x91, x101, x104, x109, x111, x114, x118, x144, x209, x210, x230, x237, x806, x807, x808, x809, x810, x811, x812, x813, x814, x815, x816, x817, x818, x819, x820, x821, x822, x823, x824, x825, x826, x827, x828);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

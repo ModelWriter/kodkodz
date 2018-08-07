@@ -914,7 +914,7 @@ public final class stable_ringleadCBadLivenessTraceRun {
         Formula x25=Formula.compose(FormulaOperator.AND, x26, x33, x36, x43, x45, x65, x68, x73, x75, x78, x82, x83, x86, x90, x91, x94, x98, x99, x120, x125, x128, x132, x240, x498, x499, x500, x501, x502, x503, x504, x505, x506, x507, x508, x509, x510, x511, x512, x513, x514, x515, x516, x517, x518, x519, x520, x521, x522);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

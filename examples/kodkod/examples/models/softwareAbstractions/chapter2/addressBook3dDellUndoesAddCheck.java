@@ -390,7 +390,7 @@ public final class addressBook3dDellUndoesAddCheck {
         Formula x16=Formula.compose(FormulaOperator.AND, x17, x19, x22, x27, x30, x53, x56, x74, x77, x81, x82, x84, x126, x177, x178, x179, x180, x181, x182, x183, x184, x185, x186, x187, x188, x189, x190, x191, x192);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

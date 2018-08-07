@@ -1478,7 +1478,7 @@ public final class prisonerTheoremCheck {
         Formula x25=Formula.compose(FormulaOperator.AND, x26, x28, x30, x32, x34, x42, x45, x67, x70, x78, x80, x100, x103, x112, x114, x117, x121, x122, x124, x127, x129, x137, x141, x151, x153, x155, x353, x402, x403, x404, x405, x406, x407, x408, x409, x410, x411, x412, x413, x414, x415, x416, x417, x418, x419, x420, x421, x422, x423, x424, x425, x426);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

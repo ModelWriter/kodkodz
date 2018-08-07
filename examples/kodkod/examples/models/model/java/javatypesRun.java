@@ -291,7 +291,7 @@ public final class javatypesRun {
         Formula x15=Formula.compose(FormulaOperator.AND, x16, x19, x25, x28, x35, x37, x44, x46, x53, x55, x67, x74, x81, x93, x95, x96, x99, x100, x101, x102, x103, x104, x105, x106, x107, x108, x109, x110, x111, x112, x113);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

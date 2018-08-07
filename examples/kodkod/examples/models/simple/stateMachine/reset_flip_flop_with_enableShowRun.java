@@ -536,7 +536,7 @@ public final class reset_flip_flop_with_enableShowRun {
         Formula x23=Formula.compose(FormulaOperator.AND, x24, x26, x28, x36, x39, x47, x49, x52, x56, x57, x59, x62, x90, x92, x95, x123, x125, x129, x161, x171, x172, x173, x174, x175, x176, x177, x178, x179, x180, x181, x182, x183, x184, x185, x186, x187, x188, x189, x190, x191, x192, x193);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

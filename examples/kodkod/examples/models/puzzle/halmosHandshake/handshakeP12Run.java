@@ -570,7 +570,7 @@ public final class handshakeP12Run {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x14, x23, x26, x31, x33, x41, x53, x74, x84, x101, x103, x104, x105, x106, x107, x108, x109, x110, x111, x112, x113);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(5);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

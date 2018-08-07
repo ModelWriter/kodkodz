@@ -689,7 +689,7 @@ public final class lifeShowRun {
         Formula x16=Formula.compose(FormulaOperator.AND, x17, x25, x28, x35, x37, x42, x44, x47, x51, x52, x60, x79, x107, x114, x183, x184, x185, x186, x187, x188, x189, x190, x191, x192, x193, x194, x195, x196, x197, x198);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -964,7 +964,7 @@ public final class opt_spanTreeClosureCheck {
         Formula x22=Formula.compose(FormulaOperator.AND, x23, x29, x32, x37, x39, x59, x62, x82, x85, x88, x92, x93, x96, x100, x101, x113, x115, x121, x158, x163, x232, x261, x262, x263, x264, x265, x266, x267, x268, x269, x270, x271, x272, x273, x274, x275, x276, x277, x278, x279, x280, x281, x282);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

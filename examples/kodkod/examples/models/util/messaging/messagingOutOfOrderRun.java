@@ -1031,7 +1031,7 @@ public final class messagingOutOfOrderRun {
         Formula x26=Formula.compose(FormulaOperator.AND, x27, x34, x37, x42, x44, x51, x53, x60, x62, x82, x85, x93, x113, x116, x122, x125, x131, x134, x140, x143, x148, x150, x156, x159, x162, x166, x167, x170, x183, x264, x267, x268, x324, x327, x328, x329, x330, x331, x332, x333, x334, x335, x336, x337, x338, x339, x340, x341, x342, x343, x344, x345, x346, x347, x348, x349, x350, x351, x352);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

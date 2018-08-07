@@ -497,7 +497,7 @@ public final class dijkstra2ProcessShowDijkstraRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x26, x30, x36, x39, x42, x46, x47, x50, x54, x55, x227, x238, x239, x240, x241, x242, x243, x244, x245, x246, x247, x248, x249, x250, x251, x252, x253, x254, x255, x256, x257);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

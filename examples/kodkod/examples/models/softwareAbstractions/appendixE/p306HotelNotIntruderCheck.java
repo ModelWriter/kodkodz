@@ -1533,7 +1533,7 @@ public final class p306HotelNotIntruderCheck {
         Formula x22=Formula.compose(FormulaOperator.AND, x23, x30, x33, x40, x42, x62, x65, x69, x123, x129, x132, x135, x139, x140, x151, x236, x359, x360, x361, x362, x363, x364, x365, x366, x367, x368, x369, x370, x371, x372, x373, x374, x375, x376, x377, x378, x379, x380);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

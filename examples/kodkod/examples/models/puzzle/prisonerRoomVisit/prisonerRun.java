@@ -1447,7 +1447,7 @@ public final class prisonerRun {
         Formula x25=Formula.compose(FormulaOperator.AND, x26, x28, x30, x32, x34, x54, x62, x65, x87, x90, x98, x100, x120, x123, x131, x133, x136, x140, x141, x143, x146, x148, x156, x160, x170, x172, x174, x372, x373, x374, x375, x376, x377, x378, x379, x380, x381, x382, x383, x384, x385, x386, x387, x388, x389, x390, x391, x392, x393, x394, x395, x396);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

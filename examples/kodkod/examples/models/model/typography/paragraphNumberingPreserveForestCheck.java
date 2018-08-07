@@ -627,7 +627,7 @@ public final class paragraphNumberingPreserveForestCheck {
         Formula x18=Formula.compose(FormulaOperator.AND, x19, x26, x29, x35, x37, x42, x44, x64, x67, x73, x75, x81, x84, x91, x93, x110, x117, x135, x151, x152, x153, x241, x242, x243, x244, x245, x246, x247, x248, x249, x250, x251, x252, x253, x254, x255, x256, x257, x258);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

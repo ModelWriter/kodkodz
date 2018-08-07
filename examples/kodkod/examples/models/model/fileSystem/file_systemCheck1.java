@@ -407,7 +407,7 @@ public final class file_systemCheck1 {
         Formula x16=Formula.compose(FormulaOperator.AND, x17, x19, x23, x24, x25, x34, x36, x41, x44, x51, x53, x89, x96, x98, x106, x108, x114, x129, x130, x131, x132, x133, x134, x135, x136, x137, x138, x139, x140, x141, x142, x143, x144);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

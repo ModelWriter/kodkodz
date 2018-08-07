@@ -519,7 +519,7 @@ public final class dijkstraKStateTraceShorterThanMaxLoopRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x28, x31, x38, x40, x60, x63, x68, x70, x75, x77, x103, x106, x110, x111, x114, x133, x145, x183, x186, x195, x196, x197, x198, x199, x200, x201, x202, x203, x204, x205, x206, x207, x208, x209, x210, x211, x212, x213);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -415,7 +415,7 @@ public final class marksweepgcSoundness1Check {
         Formula x12=Formula.compose(FormulaOperator.AND, x13, x33, x37, x57, x60, x65, x67, x74, x76, x205, x206, x207, x208, x209, x210, x211, x212, x213, x214, x215, x216);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

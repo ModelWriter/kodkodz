@@ -179,7 +179,7 @@ public final class filesystemRootTopCheck {
         Formula x10=Formula.compose(FormulaOperator.AND, x11, x14, x20, x23, x33, x40, x41, x42, x43, x44, x45, x46, x47, x48, x49);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

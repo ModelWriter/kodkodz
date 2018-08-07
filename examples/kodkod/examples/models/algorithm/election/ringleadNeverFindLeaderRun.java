@@ -1166,7 +1166,7 @@ public final class ringleadNeverFindLeaderRun {
         Formula x41=Formula.compose(FormulaOperator.AND, x42, x44, x52, x55, x62, x64, x72, x74, x79, x81, x88, x90, x95, x97, x104, x106, x114, x116, x123, x125, x145, x148, x156, x177, x180, x186, x189, x195, x198, x204, x207, x212, x214, x220, x223, x231, x233, x236, x240, x241, x244, x248, x274, x282, x288, x289, x291, x293, x295, x302, x484, x485, x486, x487, x490, x501, x582, x585, x586, x835, x846, x847, x848, x849, x850, x851, x852, x853, x854, x855, x856, x857, x858, x859, x860, x861, x862, x863, x864, x865, x866, x867, x868, x869, x870, x871, x872, x873, x874, x875, x876, x877, x878, x879, x880, x881, x882, x883, x884, x885, x886);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

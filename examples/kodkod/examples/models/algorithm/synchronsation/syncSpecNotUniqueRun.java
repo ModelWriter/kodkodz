@@ -966,7 +966,7 @@ public final class syncSpecNotUniqueRun {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x18, x21, x41, x53, x800, x801, x802, x803, x804, x805, x806, x807, x808, x809, x810);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

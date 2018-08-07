@@ -304,7 +304,7 @@ public final class lightsSafeCheck {
         Formula x14=Formula.compose(FormulaOperator.AND, x15, x17, x20, x41, x45, x50, x52, x123, x124, x125, x126, x127, x128, x129, x130, x131, x132, x133, x134, x135, x136);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

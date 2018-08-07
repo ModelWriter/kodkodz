@@ -606,7 +606,7 @@ public final class dijkstraKStateTwoPrivilegedRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x28, x31, x38, x40, x60, x63, x68, x70, x75, x77, x103, x106, x110, x111, x114, x133, x145, x183, x229, x280, x281, x282, x283, x284, x285, x286, x287, x288, x289, x290, x291, x292, x293, x294, x295, x296, x297, x298);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -424,7 +424,7 @@ public final class ringElection2ShowRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x27, x30, x36, x39, x44, x46, x49, x53, x54, x57, x61, x62, x68, x70, x87, x93, x153, x154, x155, x156, x157, x158, x159, x160, x161, x162, x163, x164, x165, x166, x167, x168, x169, x170, x171, x172);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -322,7 +322,7 @@ public final class dijkstra2ProcessDeadlockRun {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x26, x30, x36, x39, x42, x46, x47, x50, x54, x55, x56, x65, x66, x67, x68, x69, x70, x71, x72, x73, x74, x75, x76, x77, x78, x79, x80, x81, x82, x83);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

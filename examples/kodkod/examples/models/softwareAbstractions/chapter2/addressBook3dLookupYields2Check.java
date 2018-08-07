@@ -617,7 +617,7 @@ public final class addressBook3dLookupYields2Check {
         Formula x16=Formula.compose(FormulaOperator.AND, x17, x19, x22, x27, x30, x53, x56, x74, x77, x81, x82, x84, x126, x139, x140, x141, x142, x143, x144, x145, x146, x147, x148, x149, x150, x151, x152, x153, x154);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

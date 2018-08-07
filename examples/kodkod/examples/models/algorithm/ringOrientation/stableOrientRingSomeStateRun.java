@@ -627,7 +627,7 @@ public final class stableOrientRingSomeStateRun {
         Formula x22=Formula.compose(FormulaOperator.AND, x23, x25, x32, x35, x42, x44, x51, x53, x58, x60, x81, x84, x104, x107, x127, x130, x136, x139, x154, x157, x161, x162, x182, x201, x322, x336, x352, x353, x354, x355, x356, x357, x358, x359, x360, x361, x362, x363, x364, x365, x366, x367, x368, x369, x370, x371, x372, x373);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

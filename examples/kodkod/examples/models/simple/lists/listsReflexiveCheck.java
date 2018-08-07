@@ -448,7 +448,7 @@ public final class listsReflexiveCheck {
         Formula x13=Formula.compose(FormulaOperator.AND, x14, x16, x23, x26, x34, x36, x41, x43, x48, x50, x52, x69, x100, x108, x139, x145, x146, x147, x148, x149, x150, x151, x152, x153, x154, x155, x156, x157);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

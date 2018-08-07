@@ -210,7 +210,7 @@ public final class birthdayBusyDayRun {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x17, x20, x42, x45, x60, x61, x62, x63, x64, x65, x66, x67, x68, x69, x70);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -426,7 +426,7 @@ public final class mediaAssetsNoBadEntryCheck {
         Formula x19=Formula.compose(FormulaOperator.AND, x20, x25, x28, x50, x53, x61, x63, x68, x70, x75, x77, x83, x85, x91, x93, x95, x102, x104, x112, x156, x157, x158, x159, x160, x161, x162, x163, x164, x165, x166, x167, x168, x169, x170, x171, x172, x173, x174);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

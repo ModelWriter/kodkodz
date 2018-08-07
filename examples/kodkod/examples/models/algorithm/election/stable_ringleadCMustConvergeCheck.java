@@ -828,7 +828,7 @@ public final class stable_ringleadCMustConvergeCheck {
         Formula x25=Formula.compose(FormulaOperator.AND, x26, x33, x36, x43, x45, x65, x68, x73, x75, x78, x82, x83, x86, x90, x91, x94, x98, x99, x120, x125, x128, x132, x511, x512, x513, x514, x515, x516, x517, x518, x519, x520, x521, x522, x523, x524, x525, x526, x527, x528, x529, x530, x531, x532, x533, x534, x535);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

@@ -202,7 +202,7 @@ public final class addressBookAddRun {
         Formula x10=Formula.compose(FormulaOperator.AND, x11, x13, x20, x24, x35, x50, x51, x52, x53, x54, x55, x56, x57, x58, x59);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

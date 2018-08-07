@@ -1523,7 +1523,7 @@ public final class ringleadLeaderHighestCheck {
         Formula x41=Formula.compose(FormulaOperator.AND, x42, x44, x52, x55, x62, x64, x72, x74, x79, x81, x88, x90, x95, x97, x104, x106, x114, x116, x123, x125, x145, x148, x156, x177, x180, x186, x189, x195, x198, x204, x207, x212, x214, x220, x223, x231, x233, x236, x240, x241, x244, x248, x274, x282, x288, x289, x291, x293, x295, x302, x484, x485, x486, x487, x490, x501, x582, x585, x586, x602, x603, x604, x605, x606, x607, x608, x609, x610, x611, x612, x613, x614, x615, x616, x617, x618, x619, x620, x621, x622, x623, x624, x625, x626, x627, x628, x629, x630, x631, x632, x633, x634, x635, x636, x637, x638, x639, x640, x641, x642);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

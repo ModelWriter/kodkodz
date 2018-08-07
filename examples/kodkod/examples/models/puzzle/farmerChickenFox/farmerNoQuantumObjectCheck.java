@@ -464,7 +464,7 @@ public final class farmerNoQuantumObjectCheck {
         Formula x18=Formula.compose(FormulaOperator.AND, x19, x21, x24, x27, x33, x36, x41, x43, x48, x50, x53, x57, x58, x62, x67, x132, x145, x146, x147, x148, x149, x150, x151, x152, x153, x154, x155, x156, x157, x158, x159, x160, x161, x162);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

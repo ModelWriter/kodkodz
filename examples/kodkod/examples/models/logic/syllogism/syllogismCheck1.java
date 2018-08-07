@@ -149,7 +149,7 @@ public final class syllogismCheck1 {
         Formula x8=Formula.compose(FormulaOperator.AND, x9, x23, x24, x25, x26, x27, x28, x29, x30);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

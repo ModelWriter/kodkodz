@@ -234,7 +234,7 @@ public final class birthdayAddWorksCheck {
         Formula x11=Formula.compose(FormulaOperator.AND, x12, x17, x20, x42, x45, x70, x71, x72, x73, x74, x75, x76, x77, x78, x79, x80);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

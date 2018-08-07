@@ -288,7 +288,7 @@ public final class grandpa3OwnGrandpaRun {
         Formula x12=Formula.compose(FormulaOperator.AND, x13, x15, x22, x25, x32, x34, x42, x44, x51, x53, x61, x63, x68, x80, x81, x82, x83, x84, x85, x86, x87, x88, x89, x90, x91);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

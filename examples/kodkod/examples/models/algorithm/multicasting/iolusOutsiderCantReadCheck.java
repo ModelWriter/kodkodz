@@ -1959,7 +1959,7 @@ public final class iolusOutsiderCantReadCheck {
         Formula x28=Formula.compose(FormulaOperator.AND, x29, x36, x39, x46, x48, x145, x152, x154, x161, x163, x349, x356, x358, x365, x367, x374, x376, x383, x385, x407, x413, x416, x422, x425, x540, x547, x549, x570, x576, x579, x585, x588, x608, x611, x615, x616, x631, x909, x926, x1014, x1037, x1038, x1039, x1040, x1041, x1070, x1145, x1146, x1147, x1148, x1149, x1150, x1151, x1152, x1153, x1154, x1155, x1156, x1157, x1158, x1159, x1160, x1161, x1162, x1163, x1164, x1165, x1166, x1167, x1168, x1169, x1170, x1171, x1172);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

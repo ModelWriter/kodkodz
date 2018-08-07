@@ -1204,7 +1204,7 @@ public final class petersonNotStuckCheck {
         Formula x26=Formula.compose(FormulaOperator.AND, x27, x29, x32, x35, x38, x45, x49, x55, x58, x64, x67, x73, x76, x79, x83, x84, x87, x91, x92, x97, x113, x377, x569, x570, x571, x572, x573, x574, x575, x576, x577, x578, x579, x580, x581, x582, x583, x584, x585, x586, x587, x588, x589, x590, x591, x592, x593, x594);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

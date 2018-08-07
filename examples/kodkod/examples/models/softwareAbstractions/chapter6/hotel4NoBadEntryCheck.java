@@ -1565,7 +1565,7 @@ public final class hotel4NoBadEntryCheck {
         Formula x32=Formula.compose(FormulaOperator.AND, x33, x35, x38, x43, x46, x68, x71, x125, x130, x136, x139, x189, x242, x249, x251, x258, x260, x277, x285, x287, x294, x296, x303, x305, x308, x312, x313, x316, x320, x321, x337, x352, x397, x417, x430, x431, x432, x433, x434, x435, x436, x437, x438, x439, x440, x441, x442, x443, x444, x445, x446, x447, x448, x449, x450, x451, x452, x453, x454, x455, x456, x457, x458, x459, x460, x461);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
        // solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

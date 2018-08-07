@@ -502,7 +502,7 @@ public final class flipflopShowRun {
         Formula x22=Formula.compose(FormulaOperator.AND, x23, x25, x33, x36, x43, x45, x48, x52, x53, x55, x58, x86, x88, x91, x119, x121, x125, x150, x154, x155, x156, x157, x158, x159, x160, x161, x162, x163, x164, x165, x166, x167, x168, x169, x170, x171, x172, x173, x174, x175);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);

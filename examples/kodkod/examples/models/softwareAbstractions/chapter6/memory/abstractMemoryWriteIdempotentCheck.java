@@ -240,7 +240,7 @@ public final class abstractMemoryWriteIdempotentCheck {
         Formula x10=Formula.compose(FormulaOperator.AND, x11, x31, x35, x48, x75, x76, x77, x78, x79, x80, x81, x82, x83, x84);
 
         Solver solver = new Solver();
-        solver.options().setSolver(SATFactory.DefaultSAT4J);
+        solver.options().setSolver(SATFactory.MiniSat);
         solver.options().setBitwidth(4);
         //solver.options().setFlatten(false);
         solver.options().setIntEncoding(Options.IntEncoding.TWOSCOMPLEMENT);
