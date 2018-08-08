@@ -124,7 +124,7 @@ public class RequirementsModel {
         formulaList.add(irreflexive(partiallyRefines));
 
         formulaList.add(symmetric(equals));
-        formulaList.add(reflexive(equals));
+        formulaList.add(reflexive(Requirement, equals));
         formulaList.add(transitive(equals));
 
         formulaList.add(symmetric(conflicts));
@@ -222,8 +222,8 @@ public class RequirementsModel {
         return r.intersection(r.transpose()).no();
     }
 
-    private static Formula reflexive(Relation r) {
-        return Relation.IDEN.in(r);
+    private static Formula reflexive(Relation type, Relation rel) {
+        return type.product(type).in(rel);
     }
 
     private static Formula irreflexive(Relation r) {

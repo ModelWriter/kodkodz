@@ -6,6 +6,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class TestScript {
 
@@ -22,33 +25,61 @@ public class TestScript {
             out.println();
             out.flush();
             classes.forEach(testClass -> {
-                try {
                     System.out.println(testClass.getName() + " is being tested.");
                     out.println(testClass.getName() + " is being tested.");
                     out.flush();
 
                     for (int i = 0; i < testCount; i++) {
 
-                        System.out.println("Test " + (i + 1) + " is started.");
-                        out.println("Test " + (i + 1) + " is started.");
-                        out.flush();
+                        final int testNo = i + 1;
 
-                        long time = System.currentTimeMillis();
-                        testClass.getMethod("main", String[].class).invoke(null, new Object[]{new String[0]});
-                        time = System.currentTimeMillis() - time;
+                        System.out.println("Test " + testNo + " is started.");
 
-                        System.out.println("Time: " + time + " ms");
-                        out.println("Time: " + time + " ms");
-                        out.flush();
+                        boolean[] flag = new boolean[] {false};
+
+                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+                        executorService.submit(() -> {
+                            long time = System.currentTimeMillis();
+                            try {
+                                testClass.getMethod("main", String[].class).invoke(null, new Object[]{new String[0]});
+                            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                                e.printStackTrace();
+                            }
+                            time = System.currentTimeMillis() - time;
+
+                            flag[0] = true;
+
+                            System.out.println("Time: " + time + " ms");
+                            out.println("Test " + testNo + ": " + time + " ms");
+                            out.flush();
+
+                            executorService.shutdown();
+                        });
+
+                        try {
+                            executorService.awaitTermination(60, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        if (!flag[0]) {
+                            System.out.println("Couldn't solve in 60 seconds");
+                            System.out.println("Aborting...");
+                            out.println("Test " + testNo + ": Couldn't solve in 60 seconds");
+                            out.println("Aborting...");
+                            out.flush();
+                            break;
+                        }
                     }
 
                     out.println();
                     out.flush();
-
-                } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                    e.printStackTrace();
-                }
             });
+
+            System.out.println("Finished.");
+            out.println("Finished.");
+            out.flush();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
