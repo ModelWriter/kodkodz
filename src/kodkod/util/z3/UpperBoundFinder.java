@@ -278,7 +278,7 @@ public class UpperBoundFinder extends AbstractCollector<Tuple> {
 
     @Override
     public Set<Tuple> visit(IfExpression ifExpr) {
-        return Collections.emptySet();
+        return factory.noneOf(ifExpr.arity());
     }
 
     @Override
@@ -288,12 +288,19 @@ public class UpperBoundFinder extends AbstractCollector<Tuple> {
 
     @Override
     public Set<Tuple> visit(IntConstant intConst) {
-        return Collections.emptySet();
+        for (Object o : factory.universe()) {
+            try {
+                if (Integer.parseInt(o.toString()) == intConst.value())
+                    return factory.setOf(factory.tuple(o));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        return factory.allOf(1);
     }
 
     @Override
     public Set<Tuple> visit(ExprToIntCast intExpr) {
-        return Collections.emptySet();
+        return intExpr.expression().accept(this);
     }
 
     @Override
@@ -303,7 +310,7 @@ public class UpperBoundFinder extends AbstractCollector<Tuple> {
 
     @Override
     public Set<Tuple> visit(IntToExprCast castExpr) {
-        return Collections.emptySet();
+        return castExpr.intExpr().accept(this);
     }
 
     @Override
@@ -313,7 +320,9 @@ public class UpperBoundFinder extends AbstractCollector<Tuple> {
 
     @Override
     public Set<Tuple> visit(IfIntExpression intExpr) {
-        return Collections.emptySet();
+        Set<Tuple> then = intExpr.thenExpr().accept(this);
+        then.addAll(intExpr.elseExpr().accept(this));
+        return then;
     }
 
     @Override
@@ -333,17 +342,17 @@ public class UpperBoundFinder extends AbstractCollector<Tuple> {
 
     @Override
     public Set<Tuple> visit(ProjectExpression project) {
-        return Collections.emptySet();
+        return project.arity() == 0 ? factory.noneOf(project.arity()) : factory.allOf(project.arity());
     }
 
     @Override
     public Set<Tuple> visit(UnaryIntExpression intExpr) {
-        return Collections.emptySet();
+        return Relation.INTS.accept(this);
     }
 
     @Override
     public Set<Tuple> visit(BinaryIntExpression intExpr) {
-        return Collections.emptySet();
+        return Relation.INTS.accept(this);
     }
 
     @Override

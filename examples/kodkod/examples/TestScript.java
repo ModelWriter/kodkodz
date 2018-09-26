@@ -2,104 +2,156 @@ package kodkod.examples;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class TestScript {
 
-    private final static int testCount = 5;
+    private final static int testCount = 1;
+
+    private final static int timeLimit = 60;
+    private final static TimeUnit timeUnit = TimeUnit.SECONDS;
 
     public static void main(String[] args) throws Exception {
-        List<Class> classes = getClasses(TestScript.class.getClassLoader(),"kodkod/examples/models");
-        for(Class c:classes){
-            System.out.println("Class: "+c);
+        List<Class> classes = getClasses(TestScript.class.getClassLoader(), "kodkod/examples/models");
+
+        System.out.println("Classes:");
+
+        for (Class c : classes) {
+            System.out.println("Class: " + c);
         }
 
+        System.out.println();
+
+        long timeLimitMs = timeUnit.toMillis(timeLimit);
+
         try (PrintWriter out = new PrintWriter("test_script.out")) {
-            out.println(new Date().toLocaleString());
+            out.println(new Date().toString());
             out.println();
             out.flush();
             classes.forEach(testClass -> {
-                    System.out.println(testClass.getName() + " is being tested.");
-                    out.println(testClass.getName() + " is being tested.");
-                    out.flush();
+                System.out.println(testClass.getName() + " is being tested.");
+                out.println(testClass.getName() + " is being tested.");
+                out.flush();
 
-                    for (int i = 0; i < testCount; i++) {
+                String cp = Objects.requireNonNull(testClass.getClassLoader().getResource("")).getFile();
+                cp = cp + ":" + System.getenv("PWD") + ":" + System.getProperty("java.class.path");
 
-                        final int testNo = i + 1;
+                String classStr = testClass.getName();
 
-                        System.out.println("Test " + testNo + " is started.");
+                String command = "java -cp " + cp + " " + classStr;
 
-                        boolean[] flag = new boolean[] {false};
+                for (int i = 0; i < testCount; i++) {
 
-                        ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    final int testNo = i + 1;
 
-                        executorService.submit(() -> {
-                            long time = System.currentTimeMillis();
-                            try {
-                                testClass.getMethod("main", String[].class).invoke(null, new Object[]{new String[0]});
-                            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                                e.printStackTrace();
+                    System.out.println("Test " + testNo + " is started.");
+
+                    long time = System.currentTimeMillis();
+
+                    try {
+                        Process process = Runtime.getRuntime().exec(command);
+
+                        long procTime = System.currentTimeMillis();
+
+                        boolean flag = true;
+
+                        while (process.isAlive()) {
+                            if (System.currentTimeMillis() - procTime > timeLimitMs) {
+                                process.destroy();
+                                flag = false;
                             }
-                            time = System.currentTimeMillis() - time;
+                        }
 
-                            flag[0] = true;
+                        if (flag && process.exitValue() == 0) {
+                            time = System.currentTimeMillis() - time;
 
                             System.out.println("Time: " + time + " ms");
                             out.println("Test " + testNo + ": " + time + " ms");
                             out.flush();
+                        } else if (flag && process.exitValue() != 0) {
+                            System.out.println("### Error ###");
 
-                            executorService.shutdown();
-                        });
+                            BufferedReader in = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+                            String line;
 
-                        try {
-                            executorService.awaitTermination(60, TimeUnit.SECONDS);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                            boolean done = false;
 
-                        if (!flag[0]) {
-                            System.out.println("Couldn't solve in 60 seconds");
-                            System.out.println("Aborting...");
-                            out.println("Test " + testNo + ": Couldn't solve in 60 seconds");
-                            out.println("Aborting...");
+                            if ((line = in.readLine()) != null) {
+                                System.out.println(line);
+                                if (line.startsWith("Exception in thread")) {
+                                    line = line.replaceFirst("Exception in thread \".+\" ", "");
+                                    line = line.substring(0, line.indexOf(':'));
+
+                                    out.println("Test " + testNo + ": " + line);
+                                    out.flush();
+
+                                    done = true;
+                                }
+                            }
+
+                            while ((line = in.readLine()) != null) {
+                                System.out.println(line);
+                            }
+                            in.close();
+
+                            if (!done) {
+                                out.println("Test " + testNo + ": Error");
+                                out.flush();
+                            }
+                        } else {
+                            System.out.println("Couldn't solve in " + timeLimit + " " + timeUnit.toString().toLowerCase());
+                            out.println("Test " + testNo + ": Couldn't solve in " + timeLimit + " " + timeUnit.toString().toLowerCase());
                             out.flush();
-                            break;
                         }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
-                    out.println();
-                    out.flush();
+                        /*try {
+                            testClass.getMethod("main", String[].class).invoke(null, new Object[]{new String[0]});
+                        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                            e.printStackTrace();
+                        }*/
+
+                }
+
+                out.println();
+                out.flush();
             });
 
             System.out.println("Finished.");
             out.println("Finished.");
             out.flush();
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        System.exit(0);
     }
 
-    private static List<Class> getClasses(ClassLoader cl, String pack) throws Exception{
+    private static List<Class> getClasses(ClassLoader cl, String pack) throws Exception {
 
         String dottedPackage = pack.replaceAll("[/]", ".");
-        List<Class> classes = new ArrayList<Class>();
+        List<Class> classes = new ArrayList<>();
         URL upackage = cl.getResource(pack);
 
         assert upackage != null;
-        DataInputStream dis = new DataInputStream((InputStream) upackage.getContent());
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader((InputStream) upackage.getContent()));
+        //DataInputStream dis = new DataInputStream((InputStream) upackage.getContent());
         String line;
-        while ((line = dis.readLine()) != null) {
-            if(line.endsWith(".class")) {
-                classes.add(Class.forName(dottedPackage+"."+line.substring(0,line.lastIndexOf('.'))));
-            }
-            else {
+        while ((line = bufferedReader.readLine()) != null) {
+            if (line.endsWith(".class")) {
+                classes.add(Class.forName(dottedPackage + "." + line.substring(0, line.lastIndexOf('.'))));
+            } else {
                 classes.addAll(getClasses(cl, pack + "/" + line));
             }
         }

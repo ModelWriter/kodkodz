@@ -7,6 +7,7 @@ import kodkod.instance.Bounds;
 import kodkod.instance.Instance;
 import kodkod.instance.Tuple;
 import kodkod.util.z3.Z3EliminatedFormulaConverter;
+import kodkod.util.z3.Z3FormulaConverter;
 import kodkod.util.z3.Z3FormulaConverterWithBV;
 import kodkod.util.z3.Z3FormulaConverterWithInt;
 
@@ -22,6 +23,8 @@ import java.util.stream.Stream;
 public class Z3Solver implements SATSolver {
     // Formula with (quantifier size >= 'ELIMINATION_THRESHOLD') will be applied to quantifier elimination.
     private static final int ELIMINATION_THRESHOLD = 4;
+
+    private final ConverterType converterType = ConverterType.BV;
 
     private int BIT_SIZE = 8;
     private Sort UNIV;
@@ -44,11 +47,16 @@ public class Z3Solver implements SATSolver {
 
     private long solvingTime = 0;
 
+    private Map<Integer, Object> integerObjectMap = new HashMap<>();
+
+    enum ConverterType { ELIMINATED_BV, INTEGER, BV }
+
     public Z3Solver() {
         Global.setParameter("model.compact", "true");
         Global.setParameter("smt.mbqi", "true");
         Global.setParameter("smt.pull-nested-quantifiers", "true");
         Global.setParameter("smt.mbqi.trace", "true");
+        Global.setParameter("smt.core.minimize", "true");
 
         HashMap<String, String> cfg = new HashMap<>();
         cfg.put("proof", "true");
@@ -58,7 +66,7 @@ public class Z3Solver implements SATSolver {
         goal = ctx.mkGoal(true, false, false);
     }
 
-    protected void makeAssertions(Formula formula, Bounds bounds) {
+    private void makeAssertions(Formula formula, Bounds bounds) {
         System.out.println();
         System.out.println("----- z3 -----");
         System.out.println();
@@ -68,7 +76,13 @@ public class Z3Solver implements SATSolver {
 
         for (int i = 0; i < bounds.universe().size(); i++) {
             Object object = bounds.universe().atom(i);
-            objectMap.put(object.toString(), object);
+            objectMap.put("|" + object.toString() + "|", object);
+
+            try {
+                int x = Integer.parseInt(object.toString());
+                integerObjectMap.put(x, object);
+            }
+            catch (NumberFormatException ignored) { }
         }
 
         UNIV = ctx.mkEnumSort("univ", objectMap.keySet().toArray(new String[0]));
@@ -80,12 +94,34 @@ public class Z3Solver implements SATSolver {
             objectExprMap.put(object, expr);
         }
 
+
         bounds.relations().forEach(relation -> {
             Sort[] sorts = new Sort[relation.arity()];
             for (int i = 0; i < sorts.length; i++) {
                 sorts[i] = UNIV;
             }
-            FuncDecl funcDecl = ctx.mkFuncDecl(relation.name(), sorts, ctx.mkBoolSort());
+
+            FuncDecl funcDecl;
+
+            if (relation.name().isEmpty() || funcDeclMap.values().stream().anyMatch(f -> f.getSExpr().equals(relation.name()))) {
+                int uniqueCount = 0;
+
+                while (true) {
+                    int finalUniqueCount = uniqueCount;
+
+                    if (funcDeclMap.values().stream().anyMatch(f -> f.getSExpr().equals(relation.name() + finalUniqueCount))) {
+                        uniqueCount++;
+                    }
+                    else
+                        break;
+                }
+
+                funcDecl = ctx.mkFuncDecl(relation.name() + uniqueCount, sorts, ctx.mkBoolSort());
+            }
+            else {
+                funcDecl = ctx.mkFuncDecl(relation.name(), sorts, ctx.mkBoolSort());
+            }
+
             funcDeclMap.put(relation, funcDecl);
 
             bounds.lowerBounds().get(relation).forEach(tuple -> {
@@ -111,9 +147,20 @@ public class Z3Solver implements SATSolver {
 
         Goal goalSNF = ctx.mkGoal(true, false, false);
 
-        Z3FormulaConverterWithBV converter = new Z3FormulaConverterWithBV(ctx, UNIV, funcDeclMap, objectExprMap, BIT_SIZE);
-        //Z3EliminatedFormulaConverter converter = new Z3EliminatedFormulaConverter(ctx, UNIV, funcDeclMap, objectExprMap, bounds, BIT_SIZE);
-        //Z3FormulaConverterWithInt converter = new Z3FormulaConverterWithInt(ctx, UNIV, funcDeclMap, objectExprMap, BIT_SIZE);
+        Z3FormulaConverter<?> converter;
+
+        switch (converterType) {
+            case BV:
+                converter = new Z3FormulaConverterWithBV(ctx, UNIV, funcDeclMap, objectExprMap, BIT_SIZE);
+                break;
+            case INTEGER:
+                converter = new Z3FormulaConverterWithInt(ctx, UNIV, funcDeclMap, objectExprMap, BIT_SIZE);
+                break;
+            case ELIMINATED_BV:
+            default:
+                converter = new Z3EliminatedFormulaConverter(ctx, UNIV, funcDeclMap, objectExprMap, bounds, BIT_SIZE);
+                break;
+        }
 
         long cur = System.currentTimeMillis();
         boolExprFormulaMap = separateFormula(formula).stream()
@@ -134,7 +181,7 @@ public class Z3Solver implements SATSolver {
         mySolver.add(goalSNF.getFormulas());
 
         StringBuilder sb = new StringBuilder();
-        sb.append(mySolver).append(System.lineSeparator());
+        sb.append(mySolver.toString().replaceFirst("[(]univ 0[)]", "")).append(System.lineSeparator());
         sb.append("(check-sat)").append(System.lineSeparator());
         sb.append("(get-info :all-statistics)").append(System.lineSeparator());
         sb.append("(get-model)");
@@ -169,8 +216,11 @@ public class Z3Solver implements SATSolver {
 
         for (BoolExpr original : goal.getFormulas()) {
             BoolExpr boolExpr = ctx.mkBoolConst("! " + original.toString());
-            assertionMap.put(boolExpr, original);
-            solver.assertAndTrack(original, boolExpr);
+            try {
+                solver.assertAndTrack(original, boolExpr);
+                assertionMap.put(boolExpr, original);
+            }
+            catch (Exception ignored) { }
         }
 
         // Pattern to find all quantifiers
@@ -205,9 +255,9 @@ public class Z3Solver implements SATSolver {
                 //System.out.println();
                 if (forallCount < ELIMINATION_THRESHOLD) {
                     BoolExpr boolExpr = ctx.mkBoolConst("! " + e.toString());
-                    assertionMap.put(boolExpr, original);
                     try {
                         solver.assertAndTrack(e, boolExpr);
+                        assertionMap.put(boolExpr, original);
                     }
                     catch (Exception ignored) {
                     }
@@ -221,9 +271,9 @@ public class Z3Solver implements SATSolver {
 
                     for (BoolExpr b : ar.getSubgoals()[0].getFormulas()) {
                         BoolExpr boolExpr = ctx.mkBoolConst("! " + b.toString());
-                        assertionMap.put(boolExpr, original);
                         try {
                             solver.assertAndTrack(b, boolExpr);
+                            assertionMap.put(boolExpr, original);
                         }
                         catch (Exception ignored) {
                         }
@@ -235,7 +285,7 @@ public class Z3Solver implements SATSolver {
         //end of tactics application
 
         System.out.println("----------------After Tactics----------------------");
-        //System.out.println(solver);
+        System.out.println(solver);
         System.out.println("---------------------------------------------------");
 
         System.out.println();
@@ -274,6 +324,8 @@ public class Z3Solver implements SATSolver {
         makeAssertions(formula, bounds);
 
         solveThis(bounds);
+
+        //return true;
 
         return status == Status.SATISFIABLE;
     }
@@ -318,7 +370,7 @@ public class Z3Solver implements SATSolver {
                 });
 
                 for (int i : bounds.ints().toArray()) {
-                    instance.add(i, bounds.universe().factory().setOf(i));
+                    instance.add(i, bounds.universe().factory().setOf(integerObjectMap.get(i)));
                 }
 
                 System.out.println(instance);
